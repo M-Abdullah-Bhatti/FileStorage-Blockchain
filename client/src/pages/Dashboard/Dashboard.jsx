@@ -11,6 +11,7 @@ import {
 import AllUploadedFiles from "../../components/Dashboard/AllUploadedFiles";
 import AllSharedFiles from "../../components/Dashboard/AllSharedFiles";
 import AllUnsharedFiles from "../../components/Dashboard/AllUnsharedFiles";
+import AllReceivedFiles from "../../components/Dashboard/AllReceivedFiles";
 
 const Dashboard = () => {
   return (
@@ -28,6 +29,7 @@ const Dashboard = () => {
           <Tab fontSize={"xl"}>My Uploaded Files</Tab>
           <Tab fontSize={"xl"}>My Shared Files</Tab>
           <Tab fontSize={"xl"}>My Unshared Files</Tab>
+          <Tab fontSize={"xl"}>My Received Files</Tab>
         </TabList>
         <TabIndicator mt="-1.5px" height="2px" bg="black" borderRadius="1px" />
         <TabPanels>
@@ -38,6 +40,8 @@ const Dashboard = () => {
           <AllSharedFiles />
           {/* //  Third Panel Component */}
           <AllUnsharedFiles />
+          {/* //  Fourth Panel Component */}
+          <AllReceivedFiles />
         </TabPanels>
       </Tabs>
     </Box>

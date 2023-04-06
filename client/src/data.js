@@ -196,3 +196,36 @@ export const dummyUnsharedFilesData = [
     filePrice: "0.001 ETH",
   },
 ];
+
+export const dummyReceivedFilesData = [
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+  {
+    fileName: "ABCD",
+    fileHash: "afmaklfnaofa0f089fmnlamnalsfnafnafi-0w939r-qnafk",
+    sharedBy: "0x8A0eE2f53a6D5dA8cae3c80314b2561174f01828",
+  },
+];
