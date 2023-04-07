@@ -1,15 +1,22 @@
-import React, { useState } from "react";
-import "./Login.css";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { HiOutlineMail } from "react-icons/hi";
-import { AiOutlineUnlock } from "react-icons/ai";
-import { BsTelephoneFill } from "react-icons/bs";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Button,
+  Heading,
+} from "@chakra-ui/react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useState } from "react";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   // function to login user:
   const handleSubmit = async () => {
     console.log("asdfdasf");
@@ -34,55 +41,71 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      <div className="left-login">
-        <h3>Sign in to In-Build</h3>
-
-        <div
-          className="loginForm"
-          // onSubmit={loginSubmit}
-        >
-          <div className="loginEmail">
-            <HiOutlineMail />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="loginPassword">
-            <AiOutlineUnlock />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {/* <Link
-            style={{
-              color: "#47ac4a",
-              display: "flex",
-              float: "right",
-              paddingTop: "15px",
-            }}
-            to="/password/forgot"
+    <Flex
+      minH={"90vh"}
+      align={"center"}
+      justify={"center"}
+      fontFamily={"sans-serif"}
+    >
+      <Stack spacing={8} mx={"auto"} minW={"lg"} py={12} px={6}>
+        <Stack align={"center"}>
+          <Heading
+            fontSize={"4xl"}
+            textTransform={"uppercase"}
+            fontFamily={"sans-serif"}
           >
-            Forget Password ?
-          </Link> */}
-          <input
-            type="submit"
-            value="Login"
-            className="loginBtn"
-            onClick={handleSubmit}
-          />
-        </div>
-      </div>
-    </div>
+            Log in to your account
+          </Heading>
+        </Stack>
+        <Box
+          rounded={"lg"}
+          boxShadow={"lg"}
+          p={8}
+          border="2px"
+          borderColor="gray.200"
+        >
+          <Stack spacing={4}>
+            <FormControl id="email" isRequired>
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="password" isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+            <Stack spacing={10}>
+              <Stack
+                direction={{ base: "column", sm: "row" }}
+                align={"start"}
+                justify={"start"}
+              >
+                <Checkbox>Remember me</Checkbox>
+              </Stack>
+              <Button
+                onClick={handleSubmit}
+                marginX="auto"
+                backgroundColor="black"
+                textColor="white"
+                width="100%"
+                paddingY="1.4em"
+                _hover={{
+                  backgroundColor: "blackAlpha.800",
+                }}
+              >
+                Log in
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
   );
-};
-
-export default Login;
+}

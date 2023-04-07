@@ -1,16 +1,28 @@
-import React, { useState } from "react";
-import "./SignUp.css";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { HiOutlineMail } from "react-icons/hi";
-import { AiOutlineUnlock } from "react-icons/ai";
-import { BsTelephoneFill } from "react-icons/bs";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useState } from "react";
 import axios from "axios";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
-const SignUp = () => {
+export default function Signup() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
 
   // function to signup user:
   const handleSubmit = async () => {
@@ -21,7 +33,6 @@ const SignUp = () => {
           username,
           email,
           password,
-          phone,
         })
         .then((result) => {
           // toast.success("Nft created successfully");
@@ -37,74 +48,96 @@ const SignUp = () => {
   };
 
   return (
-    <div className="register">
-      <div className="right-reg">
-        <h3>Create Account</h3>
-        <div
-          className="signUpForm"
-          // encType="multipart/form-data"
-          // onSubmit={handleSubmit}
+    <Flex
+      minH={"90vh"}
+      align={"center"}
+      justify={"center"}
+      fontFamily={"sans-serif"}
+    >
+      <Stack spacing={8} mx={"auto"} minW={"lg"} py={10} px={6}>
+        <Stack align={"center"}>
+          <Heading
+            fontSize={"4xl"}
+            textAlign={"center"}
+            fontFamily={"sans-serif"}
+          >
+            CREATE ACCOUNT
+          </Heading>
+        </Stack>
+        <Box
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
+          border="2px"
+          borderColor="gray.200"
         >
-          <div className="signUpName">
-            <MdOutlineAccountCircle />
-
-            <input
-              type="text"
-              placeholder="Name"
-              required
-              name="name"
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
-
-          <div className="signUpEmail">
-            <HiOutlineMail />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="signUpPassword">
-            <AiOutlineUnlock />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div className="signUpPassword">
-            <BsTelephoneFill style={{ width: "22px" }} />
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              required
-              name="phoneNo"
-              // pattern="[0-9]{3}-[0-9]{2}-[0-9]-{3}"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-
-          <input
-            type="submit"
-            value="Register"
-            className="signUpBtn"
-            onClick={handleSubmit}
-          />
-        </div>
-      </div>
-    </div>
+          <Stack spacing={4}>
+            <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input
+                type="text"
+                name="name"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="email" isRequired>
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="password" isRequired>
+              <FormLabel>Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <Stack spacing={10} pt={2}>
+              <Button
+                onClick={handleSubmit}
+                marginX="auto"
+                backgroundColor="black"
+                textColor="white"
+                width="100%"
+                paddingY="1.4em"
+                _hover={{
+                  backgroundColor: "blackAlpha.800",
+                }}
+              >
+                Sign up
+              </Button>
+            </Stack>
+            <Stack pt={6}>
+              <Text align={"center"}>
+                Already a user?{" "}
+                <Link to="/login" textColor="blue" fontSize="lg">
+                  Login
+                </Link>
+              </Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
   );
-};
-
-export default SignUp;
+}
