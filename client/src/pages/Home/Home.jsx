@@ -10,12 +10,18 @@ const Home = () => {
     <Box width={"100%"}>
       <Hero />
       <Box
-        backgroundColor="#f5f5f5"
+        backgroundColor="#f2fffe"
         paddingTop="3em"
         textAlign={"center"}
         paddingBottom={10}
       >
-        <Text fontSize="5xl" textAlign="center" textTransform="uppercase">
+        <Text
+          fontSize="5xl"
+          textAlign="center"
+          textTransform="uppercase"
+          textColor="#0d8775"
+          fontFamily="auto"
+        >
           Files for sale
         </Text>
         <CardsSection isHomePage={true} />

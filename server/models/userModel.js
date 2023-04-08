@@ -17,11 +17,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    phone: {
-      type: String,
-      required: true,
-    },
-
   },
   {
     timestamps: true,
@@ -30,9 +25,12 @@ const userSchema = mongoose.Schema(
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-userSchema.methods.getJWTToken = function() { // function to automatically login when user registers new account
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES }) // process.env.JWT_SECRET : if anyone gets access to this PK then he/she can get access to admin accounts and make 1000s of fake accounts
-}
+userSchema.methods.getJWTToken = function () {
+  // function to automatically login when user registers new account
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES,
+  }); // process.env.JWT_SECRET : if anyone gets access to this PK then he/she can get access to admin accounts and make 1000s of fake accounts
+};
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {

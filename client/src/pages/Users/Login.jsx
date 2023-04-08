@@ -42,19 +42,22 @@ export default function Login() {
 
   return (
     <Flex
-      minH={"90vh"}
+      minH={"75vh"}
       align={"center"}
       justify={"center"}
       fontFamily={"sans-serif"}
+      bg="#f2fffe"
     >
       <Stack spacing={8} mx={"auto"} minW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading
-            fontSize={"4xl"}
+            fontSize={"5xl"}
             textTransform={"uppercase"}
-            fontFamily={"sans-serif"}
+            fontFamily={"auto"}
+            textColor="#0d8775"
+            fontWeight="semi-bold"
           >
-            Log in to your account
+            Log in
           </Heading>
         </Stack>
         <Box
@@ -63,6 +66,7 @@ export default function Login() {
           p={8}
           border="2px"
           borderColor="gray.200"
+          bg="white"
         >
           <Stack spacing={4}>
             <FormControl id="email" isRequired>
@@ -109,3 +113,5 @@ export default function Login() {
     </Flex>
   );
 }
+
+// YWXv55G05yAn6EVb

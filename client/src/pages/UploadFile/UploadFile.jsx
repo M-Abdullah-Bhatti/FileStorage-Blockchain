@@ -29,11 +29,17 @@ export default function UploadFile() {
       flexDirection={"column"}
       fontFamily="auto"
       paddingTop={6}
+      bg="#f2fffe"
     >
-      <Text fontSize="4xl" textAlign="center" textTransform="uppercase">
+      <Text
+        fontSize="5xl"
+        textColor="#0d8775"
+        textAlign="center"
+        textTransform="uppercase"
+      >
         Upload your File
       </Text>
-      <Stack spacing={8} mx={"auto"} minW={"md"} py={6} px={6}>
+      <Stack spacing={8} mx={"auto"} minW={"md"} pt={3} pb={10} px={6}>
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}

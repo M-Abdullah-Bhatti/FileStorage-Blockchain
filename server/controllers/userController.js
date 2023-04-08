@@ -30,7 +30,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, phone } = req.body;
+  const { username, email, password } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -42,7 +42,6 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
-    phone,
   });
 
   if (user) {
@@ -51,7 +50,6 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
-      phone: user.phone,
     });
   } else {
     res.status(401);
@@ -71,7 +69,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
-      phone: user.phone,
     });
   } else {
     res.status(404);

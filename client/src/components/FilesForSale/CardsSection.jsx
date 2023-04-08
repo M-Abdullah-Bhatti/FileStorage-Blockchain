@@ -36,7 +36,7 @@ export default function CardsSection({ isHomePage }) {
             paddingTop={12}
             paddingBottom={5}
             paddingX="10em"
-            backgroundColor="#f5f5f5"
+            backgroundColor="#f2fffe"
           >
             {isHomePage
               ? currentItems

@@ -38,21 +38,23 @@ export default function Hero() {
                 position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: "red.400",
+                bg: "#87ffee",
                 zIndex: -1,
               }}
             >
-              Write once,
+              Decentralized,
             </Text>
             <br />
-            <Text as={"span"} color={"red.400"}>
-              use everywhere!
+            <Text as={"span"} color={"#009781"}>
+              File Storage System
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            Introducing our revolutionary decentralized file storage system -
+            the ultimate solution for secure and immutable data storage.
+            Utilizing blockchain technology, users can store their files with
+            confidence, knowing that their data is tamper-proof and protected by
+            state-of-the-art security measures.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -63,9 +65,9 @@ export default function Hero() {
               size={"lg"}
               fontWeight={"normal"}
               px={6}
-              colorScheme={"red"}
-              bg={"red.400"}
-              _hover={{ bg: "red.500" }}
+              bg={"#009781"}
+              textColor={"white"}
+              _hover={{ bg: "#40857b" }}
             >
               Get started
             </Button>
@@ -94,37 +96,23 @@ export default function Hero() {
             top={"-20%"}
             left={0}
             zIndex={-1}
-            color={useColorModeValue("red.50", "red.400")}
+            color={useColorModeValue("#e6fffd", "#e6fffd")}
           />
           <Box
             position={"relative"}
-            height={"300px"}
+            height={"350px"}
             rounded={"2xl"}
-            boxShadow={"2xl"}
+            boxShadow={"sm"}
             width={"full"}
             overflow={"hidden"}
           >
-            <IconButton
-              aria-label={"Play Button"}
-              variant={"ghost"}
-              _hover={{ bg: "transparent" }}
-              icon={<PlayIcon w={12} h={12} />}
-              size={"lg"}
-              color={"white"}
-              position={"absolute"}
-              left={"50%"}
-              top={"50%"}
-              transform={"translateX(-50%) translateY(-50%)"}
-            />
             <Image
               alt={"Hero Image"}
               fit={"cover"}
               align={"center"}
               w={"100%"}
               h={"100%"}
-              src={
-                "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-              }
+              src={"/bg1.png"}
             />
           </Box>
         </Flex>

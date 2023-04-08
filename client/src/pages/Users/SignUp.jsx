@@ -29,7 +29,7 @@ export default function Signup() {
     console.log("asdfdasf");
     try {
       await axios
-        .post("http://localhost:5000/api/user/", {
+        .post("http://localhost:5000/api/user/signup", {
           username,
           email,
           password,
@@ -53,13 +53,16 @@ export default function Signup() {
       align={"center"}
       justify={"center"}
       fontFamily={"sans-serif"}
+      bg="#f2fffe"
     >
       <Stack spacing={8} mx={"auto"} minW={"lg"} py={10} px={6}>
         <Stack align={"center"}>
           <Heading
-            fontSize={"4xl"}
+            fontSize={"5xl"}
+            fontWeight="semi-bold"
             textAlign={"center"}
-            fontFamily={"sans-serif"}
+            fontFamily={"auto"}
+            textColor="#0d8775"
           >
             CREATE ACCOUNT
           </Heading>
@@ -130,7 +133,7 @@ export default function Signup() {
             <Stack pt={6}>
               <Text align={"center"}>
                 Already a user?{" "}
-                <Link to="/login" textColor="blue" fontSize="lg">
+                <Link to="/login" fontSize="lg">
                   Login
                 </Link>
               </Text>

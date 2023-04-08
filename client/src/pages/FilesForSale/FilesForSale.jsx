@@ -4,8 +4,14 @@ import { Box, Text } from "@chakra-ui/react";
 
 const FilesForSale = () => {
   return (
-    <Box backgroundColor="#f5f5f5" paddingTop="3em">
-      <Text fontSize="5xl" textAlign="center" textTransform="uppercase">
+    <Box backgroundColor="#f2fffe" paddingTop="3em">
+      <Text
+        fontSize="5xl"
+        textAlign="center"
+        textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
+      >
         Files for sale
       </Text>
       <CardsSection isHomePage={false} />

@@ -39,9 +39,9 @@ export default function Navbar() {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg="#fdfdfd" px={"5em"} boxShadow="sm">
         <Flex
-          h={16}
+          h={20}
           alignItems={"center"}
           justifyContent={"space-between"}
           fontFamily="auto"
@@ -55,8 +55,12 @@ export default function Navbar() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box fontWeight="bold" fontSize={{ base: "sm", md: "xl" }}>
-              <Link to="/">Decentralized File Storage System </Link>
+            <Box
+              fontWeight="bold"
+              fontSize={{ base: "sm", md: "3xl" }}
+              marginRight="1em"
+            >
+              <Link to="/">DFS System </Link>
             </Box>
             <HStack
               as={"nav"}
@@ -78,14 +82,9 @@ export default function Navbar() {
                 variant={"link"}
                 cursor={"pointer"}
                 minW={0}
-                marginLeft="1em"
+                marginLeft="0.5em"
               >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
+                <Avatar size={"lg"} src={"/profile.png"} />
               </MenuButton>
               <MenuList>
                 <MenuItem>Profile Settings</MenuItem>

@@ -17,15 +17,17 @@ const Dashboard = () => {
   return (
     <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
       <Text
-        fontSize="4xl"
         mb={"5"}
+        fontSize="5xl"
         textAlign="center"
         textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
       >
         Dashboard
       </Text>
       <Tabs isLazy isFitted position="relative" variant="unstyled">
-        <TabList paddingY={1} bg={"gray.100"}>
+        <TabList paddingY={1} bg={"#e1fffd"}>
           <Tab fontSize={"xl"}>My Uploaded Files</Tab>
           <Tab fontSize={"xl"}>My Shared Files</Tab>
           <Tab fontSize={"xl"}>My Unshared Files</Tab>

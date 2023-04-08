@@ -22,7 +22,7 @@ const CardComponent = ({ data, onOpen }) => {
         justifyContent="space-between"
         marginBottom="-1em"
       >
-        <Heading fontFamily="sans-serif" size="md">
+        <Heading fontFamily="auto" size="md">
           {" "}
           File id # {data.fileId}
         </Heading>
@@ -33,14 +33,14 @@ const CardComponent = ({ data, onOpen }) => {
         </Tooltip>
       </CardHeader>
       <CardBody>
-        <Text fontFamily="sans-serif" textAlign="left" marginBottom="0.5em">
+        <Text textAlign="left" marginBottom="0.5em">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Name:{" "}
           </Text>
           {data.name}
         </Text>
-        <Text fontFamily="sans-serif" textAlign="left" marginBottom="0.5em">
+        <Text fontFamily="auto" textAlign="left" marginBottom="0.5em">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Description:{" "}
@@ -48,7 +48,7 @@ const CardComponent = ({ data, onOpen }) => {
           {data.description}
         </Text>
 
-        <Text fontFamily="sans-serif" textAlign="left" marginBottom="0.5em">
+        <Text fontFamily="auto" textAlign="left" marginBottom="0.5em">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Owner:{" "}
@@ -59,7 +59,7 @@ const CardComponent = ({ data, onOpen }) => {
         <Text
           fontWeight="bold"
           fontSize="lg"
-          fontFamily="sans-serif"
+          fontFamily="auto"
           textAlign="left"
           marginBottom="0.5em"
         >
@@ -74,7 +74,7 @@ const CardComponent = ({ data, onOpen }) => {
             {data.link} <ExternalLinkIcon mx="2px" />
           </Link>
         </Text>
-        <Text fontFamily="sans-serif" textAlign="left">
+        <Text fontFamily="auto" textAlign="left">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Price:{" "}

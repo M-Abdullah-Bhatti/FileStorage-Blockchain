@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 
 const NavLink = ({ data }) => (
   <Link
-    px={2}
+    px={4}
     py={1}
+    fontSize="xl"
     rounded={"md"}
     _hover={{
       textDecoration: "none",
