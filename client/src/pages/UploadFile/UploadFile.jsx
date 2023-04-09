@@ -11,14 +11,74 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { create } from "ipfs-http-client";
+import JSEncrypt from "jsencrypt";
+
+import { fromByteArray } from "base64-js";
+
+const projectId = "2NeEZqOeOOi9fQgDL6VoIMwKIZY";
+const projectSecret = "b4ae65044a6e29c52c4091bf29a976b2";
+const auth =
+  "Basic " +
+  fromByteArray(new TextEncoder().encode(`${projectId}:${projectSecret}`));
+
+// const auth =
+//   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+
+const ipfs = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+  headers: {
+    authorization: auth,
+  },
+});
 
 export default function UploadFile() {
+  let encryptor = new JSEncrypt({ default_key_size: 2048 });
+  let encrypted;
+
+  let publicKey, privateKey;
+
   const [buttonText, setButtonText] = useState("Upload File");
   const [hashSuccess, setHashSuccess] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
+  const [ipfsHash, setIpfsHash] = useState("");
 
-  const handleUploadFile = () => {
+  const handleChange = async (e) => {
     setHashSuccess(true);
     setButtonText("Wait for few seconds to get the hash");
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    const added = await ipfs.add(file);
+    const ipHash = added.path;
+    setIpfsHash(`https://gateway.pinata.cloud/ipfs/${ipHash}`);
+    console.log("done");
+    console.log(`https://gateway.pinata.cloud/ipfs/${ipHash}`);
+  };
+  const handleUploadFile = async () => {
+    console.log("upload called");
+  };
+
+  const get = async () => {
+    // First get both public and private Keys
+    console.log("---- ", encryptor.getKey());
+    publicKey = encryptor.getPublicKey();
+    privateKey = encryptor.getPrivateKey();
+
+    console.log("publicKey ", publicKey);
+    console.log("privateKey ", privateKey);
+    // localStorage.setItem("privateKey", privateKey);
+
+    // console.log("sdaasd");
+    // get encrypted hash which need to be stored in blockchain
+    encryptor.setPublicKey(publicKey);
+    encrypted = encryptor.encrypt(ipfsHash);
+    console.log(encrypted);
+
+    // store this encrypted hash in blockchain:
+
+    // store encrypted hash and privateKey in mongodb via api
   };
 
   return (
@@ -58,7 +118,7 @@ export default function UploadFile() {
               <Textarea size="md" minHeight="10em" />
             </FormControl>
             <FormControl id="file">
-              <Input type="file" p={1} mb={2} />
+              <Input type="file" p={1} mb={2} onChange={handleChange} />
             </FormControl>
             <Stack spacing={10}>
               <Button
@@ -76,6 +136,7 @@ export default function UploadFile() {
               >
                 {buttonText}
               </Button>
+              <Button onClick={get}>Do work</Button>
             </Stack>
           </Stack>
         </Box>
