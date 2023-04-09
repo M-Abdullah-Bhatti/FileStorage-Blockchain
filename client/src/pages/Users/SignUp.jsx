@@ -15,9 +15,10 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const [username, setUserName] = useState("");
@@ -25,8 +26,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
 
   // function to signup user:
-  const handleSubmit = async () => {
-    console.log("asdfdasf");
+  const handleSignupSubmit = async () => {
     try {
       await axios
         .post("http://localhost:5000/api/user/signup", {
@@ -37,6 +37,7 @@ export default function Signup() {
         .then((result) => {
           // toast.success("Nft created successfully");
           console.log("user register successfully", result);
+          navigate("/login");
           // setTimeout(() => {
           //   window.location.reload(true);
           // }, "2000");
@@ -117,7 +118,7 @@ export default function Signup() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                onClick={handleSubmit}
+                onClick={handleSignupSubmit}
                 marginX="auto"
                 backgroundColor="black"
                 textColor="white"

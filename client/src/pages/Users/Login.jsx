@@ -10,15 +10,17 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ handleLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   // function to login user:
-  const handleSubmit = async () => {
+  const handleLoginSubmit = async () => {
     console.log("asdfdasf");
     try {
       await axios
@@ -29,12 +31,10 @@ export default function Login() {
         .then((result) => {
           // toast.success("Nft created successfully");
           console.log("user login successfully", result.data.token);
-          Cookies.set("token", result.data.token);
-          // setTimeout(() => {
-          //   window.location.reload(true);
-          // }, "2000");
+          handleLogin(result.data.token);
+          navigate("/");
         })
-        .catch((error) => alert(error.message));
+        .catch((error) => console.log(error.message));
     } catch (error) {
       console.log(error.message);
     }
@@ -94,7 +94,7 @@ export default function Login() {
                 <Checkbox>Remember me</Checkbox>
               </Stack>
               <Button
-                onClick={handleSubmit}
+                onClick={handleLoginSubmit}
                 marginX="auto"
                 backgroundColor="black"
                 textColor="white"

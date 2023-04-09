@@ -8,18 +8,25 @@ import Home from "./pages/Home/Home";
 import FilesForSale from "./pages/FilesForSale/FilesForSale";
 import Footer from "./components/Footer/Footer";
 import UploadFile from "./pages/UploadFile/UploadFile";
+import useAuthentication from "./customHooks/useAuthentication";
 
 function App() {
+  const { isLoggedIn, handleLogin, handleLogout } = useAuthentication();
   return (
     <div className="App">
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/filesforsale" element={<FilesForSale />} />
         <Route path="/uploadfile" element={<UploadFile />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          exact
+          path="/signup"
+          // element={<SignUp handleSignup={handleLogin} />}
+          element={<SignUp />}
+        />
+        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
       </Routes>
       <Footer />
     </div>

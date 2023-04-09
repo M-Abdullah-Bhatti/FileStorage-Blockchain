@@ -11,11 +11,12 @@ import {
   MenuItem,
   MenuDivider,
   useDisclosure,
-  useColorModeValue,
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { ConnectWallet } from "@thirdweb-dev/react";
 import NavLink from "./NavLink";
 import NavButtons from "./NavButtons";
 
@@ -34,8 +35,23 @@ const Links = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar({ isLoggedIn, handleLogout }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleLogoutSubmit = async () => {
+    try {
+      await axios
+        .get("http://localhost:5000/api/user/logout")
+        .then(() => {
+          handleLogout();
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   return (
     <>
@@ -73,25 +89,34 @@ export default function Navbar() {
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <NavButtons isMobileScreen={false} />
-
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-                marginLeft="0.5em"
-              >
-                <Avatar size={"lg"} src={"/profile.png"} />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Profile Settings</MenuItem>
-                <MenuDivider />
-                <MenuItem>Logout</MenuItem>
-              </MenuList>
-            </Menu>
+            {!isLoggedIn ? (
+              <NavButtons isMobileScreen={false} />
+            ) : (
+              <>
+                <ConnectWallet
+                  accentColor="#f213a4"
+                  colorMode="dark"
+                  style={{ background: "black", color: "white" }}
+                />
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                    marginLeft="0.5em"
+                  >
+                    <Avatar size={"lg"} src={"/profile.png"} />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Profile Settings</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={handleLogoutSubmit}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </>
+            )}
           </Flex>
         </Flex>
 
