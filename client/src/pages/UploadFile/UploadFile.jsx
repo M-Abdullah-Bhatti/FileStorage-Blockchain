@@ -11,11 +11,15 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { ethers } from "ethers";
 import { create } from "ipfs-http-client";
 import JSEncrypt from "jsencrypt";
 
 import { fromByteArray } from "base64-js";
-import { useEthereum } from "../../customHooks/useEthereum";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const projectId = "2NeEZqOeOOi9fQgDL6VoIMwKIZY";
 const projectSecret = "b4ae65044a6e29c52c4091bf29a976b2";
@@ -36,17 +40,13 @@ const ipfs = create({
 });
 
 export default function UploadFile() {
+  const navigate = useNavigate();
   let encryptor = new JSEncrypt({ default_key_size: 2048 });
   let encryptedHash;
 
   let publicKey, privateKey;
 
-  // const [buttonText, setButtonText] = useState("Upload File");
-  // const [hashSuccess, setHashSuccess] = useState(false);
-  // const [ipfsHash, setIpfsHash] = useState("");
   const [selectedFile, setSelectedFile] = useState();
-  // const [isLoading, setIsLoading] = useState(false);
-  const { contract } = useEthereum();
   const [fileInfo, setFileInfo] = useState({
     name: "",
     description: "",
@@ -61,58 +61,36 @@ export default function UploadFile() {
         ...fileInfo,
         ipfsHash: `https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`,
       });
-      console.log("done");
       console.log(`https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`);
 
-      // let gasLimit = await contract.estimateGas.uploadFile(
-      //   fileInfo.name,
-      //   fileInfo.description,
-      //   "fileInfo.ipfsHash"
-      // );
-
       //   // First get both public and private Keys
-      // console.log("---- ", encryptor.getKey());
       publicKey = encryptor.getPublicKey();
       privateKey = encryptor.getPrivateKey();
 
-      // console.log("publicKey ", publicKey);
-      // console.log("privateKey ", privateKey);
-      // localStorage.setItem("privateKey", privateKey);
-
-      // console.log("sdaasd");
       // get encrypted hash which need to be stored in blockchain
       encryptor.setPublicKey(publicKey);
       encryptedHash = encryptor.encrypt(fileInfo.ipfsHash);
-      // console.log(encrypted);
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
 
       const tx = await contract.uploadFile(
         fileInfo.name,
         fileInfo.description,
         encryptedHash
-        // { gasLimit: 800000 }
-        // { gasLimit: gasLimit }
       );
       await tx.wait();
-      console.log("File uploaded successfully.");
+      toast.success("File Uploaded Successfully");
+      navigate("/dashboard");
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
-
-  // const handleChange = async (e) => {
-  //   setHashSuccess(true);
-  //   setButtonText("Wait for few seconds to get the hash");
-  //   const file = e.target.files[0];
-  //   setSelectedFile(file);
-  //   const added = await ipfs.add(file);
-  //   const ipHash = added.path;
-  //   setIpfsHash(`https://gateway.pinata.cloud/ipfs/${ipHash}`);
-  //   console.log("done");
-  //   console.log(`https://gateway.pinata.cloud/ipfs/${ipHash}`);
-  // };
-  // const handleUploadFile = async () => {
-  //   console.log("upload called");
-  // };
 
   // const handle = async () => {
   //   // First get both public and private Keys
@@ -202,12 +180,9 @@ export default function UploadFile() {
                   backgroundColor: "blackAlpha.800",
                 }}
                 onClick={handleFileUpload}
-                // isDisabled={hashSuccess}
               >
-                {/* {buttonText} */}
                 Upload File
               </Button>
-              {/* <Button onClick={get}>Do work</Button> */}
             </Stack>
           </Stack>
         </Box>

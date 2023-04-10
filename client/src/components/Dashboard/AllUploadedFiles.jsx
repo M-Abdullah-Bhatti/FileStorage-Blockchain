@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TabPanel,
@@ -9,26 +9,47 @@ import {
   Tr,
   Th,
   Td,
+  Link,
   useDisclosure,
   Text,
 } from "@chakra-ui/react";
-import { dummyUploadedFilesData } from "../../data";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import { ethers } from "ethers";
 import SetFileForSaleModal from "../Modals/SetFileForSaleModal";
 import Pagination from "../Pagination/Pagination";
 
 const AllUploadedFiles = () => {
+  const [files, setFiles] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dummyUploadedFilesData.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-  const showPagination =
-    dummyUploadedFilesData.length > itemsPerPage ? true : false;
+  const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
+  const showPagination = files.length > itemsPerPage ? true : false;
+
+  useEffect(() => {
+    const fetchAllMyUploadedFiles = async () => {
+      // Connect to the contract using ethers.js
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
+
+      // Call the getAllMyUploadedFiles() function and retrieve the files
+      const files = await contract.getAllMyUploadedFiles();
+
+      // Set the files state variable
+      setFiles(files);
+    };
+
+    fetchAllMyUploadedFiles();
+  }, []);
 
   return (
     <TabPanel>
@@ -46,7 +67,7 @@ const AllUploadedFiles = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {dummyUploadedFilesData.length === 0 ? (
+            {files.length === 0 ? (
               <Tr>
                 <Text fontSize="3xl" textAlign="center" paddingY={10}>
                   You haven't uploaded any file
@@ -55,9 +76,20 @@ const AllUploadedFiles = () => {
             ) : (
               currentItems.map((data, i) => (
                 <Tr key={i}>
-                  <Td>{data.fileName}</Td>
-                  <Td>{data.fileHash}</Td>
-                  <Td>{data.filePrice}</Td>
+                  <Td>{data.name}</Td>
+                  <Td>
+                    <Link
+                      fontWeight="light"
+                      fontSize="md"
+                      href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
+                      isExternal
+                    >
+                      {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
+                      <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  </Td>
+
+                  <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
                   <Td>
                     <Button
                       onClick={onOpen}
@@ -80,7 +112,7 @@ const AllUploadedFiles = () => {
       {showPagination && (
         <Pagination
           itemsPerPage={itemsPerPage}
-          totalItems={dummyUploadedFilesData.length}
+          totalItems={files.length}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />

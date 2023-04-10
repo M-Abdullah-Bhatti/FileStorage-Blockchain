@@ -1,4 +1,6 @@
 import "./App.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Users/Login";
 import SignUp from "./pages/Users/SignUp";
@@ -15,6 +17,7 @@ function App() {
   return (
     <div className="App">
       <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <ToastContainer position="top-center" autoClose={3000} />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/filesforsale" element={<FilesForSale />} />
