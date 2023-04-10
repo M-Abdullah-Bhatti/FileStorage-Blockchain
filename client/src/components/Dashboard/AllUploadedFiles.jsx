@@ -53,7 +53,6 @@ const AllUploadedFiles = () => {
 
   return (
     <TabPanel>
-      <SetFileForSaleModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
       <TableContainer>
         <Table size="md" border="1px" borderColor="gray.200">
           <Thead>
@@ -75,35 +74,44 @@ const AllUploadedFiles = () => {
               </Tr>
             ) : (
               currentItems.map((data, i) => (
-                <Tr key={i}>
-                  <Td>{data.name}</Td>
-                  <Td>
-                    <Link
-                      fontWeight="light"
-                      fontSize="md"
-                      href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
-                      isExternal
-                    >
-                      {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
-                      <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  </Td>
+                <>
+                  <SetFileForSaleModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    fileId={data.fileId}
+                  />
 
-                  <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
-                  <Td>
-                    <Button
-                      onClick={onOpen}
-                      colorScheme="teal"
-                      backgroundColor="black"
-                      size="lg"
-                      _hover={{
-                        backgroundColor: "blackAlpha.800",
-                      }}
-                    >
-                      Set File For Sale
-                    </Button>
-                  </Td>
-                </Tr>
+                  <Tr key={i}>
+                    <Td>{data.name}</Td>
+                    <Td>
+                      <Link
+                        fontWeight="light"
+                        fontSize="md"
+                        href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
+                        isExternal
+                      >
+                        {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
+                        <ExternalLinkIcon mx="2px" />
+                      </Link>
+                    </Td>
+
+                    <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
+                    <Td>
+                      <Button
+                        onClick={onOpen}
+                        colorScheme="teal"
+                        backgroundColor="black"
+                        size="lg"
+                        _hover={{
+                          backgroundColor: "blackAlpha.800",
+                        }}
+                      >
+                        Set File For Sale
+                      </Button>
+                    </Td>
+                  </Tr>
+                </>
               ))
             )}
           </Tbody>

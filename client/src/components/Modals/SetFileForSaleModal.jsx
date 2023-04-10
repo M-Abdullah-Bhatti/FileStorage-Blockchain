@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -12,18 +12,45 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ethers } from "ethers";
 
 export default function SetFileForSaleModal(props) {
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onOpen, onClose, fileId } = props;
+  const [price, setPrice] = useState(null);
+  const navigate = useNavigate();
 
-  const initialRef = React.useRef(null);
-  const finalRef = React.useRef(null);
+  const handleSetFileForSale = async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
+
+      const tx = await contract.setFileForSale(
+        fileId,
+        ethers.utils.parseEther(price)
+      );
+      onClose();
+
+      await tx.wait();
+      toast.success("Price Set Successfully");
+      setTimeout(() => {
+        navigate("/filesforsale");
+      }, 3000);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
       <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
         size="xl" // sets the size of the modal
@@ -43,6 +70,8 @@ export default function SetFileForSaleModal(props) {
             <FormControl mt={4}>
               <FormLabel>Price:</FormLabel>
               <Input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
                 type="number"
                 step="0.01"
                 min="0"
@@ -52,7 +81,7 @@ export default function SetFileForSaleModal(props) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button onClick={handleSetFileForSale} colorScheme="blue" mr={3}>
               Set For Sale
             </Button>
             <Button onClick={onClose}>Cancel</Button>
