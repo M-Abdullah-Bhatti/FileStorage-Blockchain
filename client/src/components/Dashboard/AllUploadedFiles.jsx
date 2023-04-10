@@ -47,6 +47,8 @@ const AllUploadedFiles = () => {
 
       // Set the files state variable
       setFiles(files);
+
+      console.log("files: ", files);
     };
 
     fetchAllMyUploadedFiles();

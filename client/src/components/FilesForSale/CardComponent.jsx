@@ -12,8 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import React, { useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 const CardComponent = (props) => {
+  const navigate = useNavigate();
   // console.log("Props.dataaaaaaaaaaa" + props.data.fileId);
   const {
     onOpen,
@@ -24,6 +28,30 @@ const CardComponent = (props) => {
     fileHash,
     filePrice,
   } = props;
+
+  useEffect(() => {
+    console.log("---", fileId);
+  }, []);
+
+  const handleBuy = async (fileId) => {
+    // try {
+    //   // console.log(fileId);
+    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //   const signer = provider.getSigner();
+    //   const contract = new ethers.Contract(
+    //     FileStorageMarketplace.address,
+    //     FileStorageMarketplace.abi,
+    //     signer
+    //   );
+    //   const tx = await contract.buyFile(fileId);
+    //   await tx.wait();
+    //   // toast.success("File Buy successfully Successfully");
+    //   navigate("/dashboard");
+    // } catch (error) {
+    //   // toast.error(error.message);
+    //   console.log("fileId");
+    // }
+  };
 
   return (
     <Card>
@@ -64,8 +92,8 @@ const CardComponent = (props) => {
             {" "}
             Owner:{" "}
           </Text>
-          abalfalfnasl
-          {/* {`${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`} */}
+
+          {`${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`}
         </Text>
 
         <Text
@@ -83,8 +111,7 @@ const CardComponent = (props) => {
             href={`https://gateway.pinata.cloud/ipfs/${fileHash}`}
             isExternal
           >
-            {/* {fileHash.slice(0, 15) + "..." + fileHash.slice(-10)}{" "} */}
-            abdjadajfbafbafbafbakbfas
+            {fileHash.slice(0, 15) + "..." + fileHash.slice(-10)}{" "}
             <ExternalLinkIcon mx="2px" />
           </Link>
         </Text>
@@ -93,8 +120,7 @@ const CardComponent = (props) => {
             {" "}
             Price:{" "}
           </Text>
-          lnladd
-          {/* {filePrice} ETH */}
+          {filePrice} ETH
         </Text>
       </CardBody>
       <CardFooter>
@@ -107,6 +133,7 @@ const CardComponent = (props) => {
           _hover={{
             backgroundColor: "blackAlpha.800",
           }}
+          onClick={handleBuy(fileId)}
         >
           Buy File
         </Button>

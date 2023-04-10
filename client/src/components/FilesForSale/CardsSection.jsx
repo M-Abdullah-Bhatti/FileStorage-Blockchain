@@ -15,8 +15,7 @@ export default function CardsSection({ isHomePage }) {
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  let currentItems;
-  // const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
 
   // console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
 
@@ -33,17 +32,17 @@ export default function CardsSection({ isHomePage }) {
       );
 
       const sharedFiles = await contract.getFilesForSale();
-      console.log("Shared Files  " + sharedFiles);
 
       // Set the files state variable
       setSharedFiles(sharedFiles);
+
+      console.log("sharedFiles: ", sharedFiles);
     };
 
     fetchGetFilesForSale();
+    // console.log("Currentee " + currentItems);
   }, []);
 
-  currentItems = sharedFiles?.slice(3, 8);
-  console.log("Currentee " + currentItems);
   return (
     <>
       {sharedFiles.length === 0 ? (
@@ -67,30 +66,25 @@ export default function CardsSection({ isHomePage }) {
           >
             {isHomePage
               ? currentItems.slice(0, 3).map((data, i) => (
-                  <Box>
-                    {/* <ShareFileModal
+                  <>
+                    <ShareFileModal
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
                       fileId={data.fileId}
-                    /> */}
-                    {/* <CardComponent
-                      fileId={data.fileId}
+                    />
+                    <CardComponent
+                      fileId={Number(data.fileId)}
                       fileName={data.name}
                       fileDescription={data.description}
-                      // fileOwner={data.owner.toString()}
-                      // fileHash={data.hash}
-                      // filePrice={ethers.utils
-                      //   .formatEther(data.price)
-                      //   .toString()}
+                      fileOwner={data.owner.toString()}
+                      fileHash={data.hash}
+                      filePrice={ethers.utils
+                        .formatEther(data.price)
+                        .toString()}
                       onOpen={onOpen}
-                    /> */}
-                    {/* <Text>
-                      fileId={data.fileId}
-                      fileName={data.name}
-                      fileDescription={data.description}
-                    </Text> */}
-                  </Box>
+                    />
+                  </>
                 ))
               : currentItems.map((data, i) => (
                   <>
@@ -100,22 +94,22 @@ export default function CardsSection({ isHomePage }) {
                       onClose={onClose}
                       fileId={data.fileId}
                     />
-                    {/* <CardComponent
-                      fileId={data.fileId}
+                    <CardComponent
+                      fileId={Number(data.fileId)}
                       fileName={data.name}
                       fileDescription={data.description}
-                      // fileOwner={data.owner.toString()}
-                      // fileHash={data.hash.}
-                      // filePrice={ethers.utils
-                      //   .formatEther(data.price)
-                      //   .toString()}
+                      fileOwner={data.owner.toString()}
+                      fileHash={data.hash}
+                      filePrice={ethers.utils
+                        .formatEther(data.price)
+                        .toString()}
                       onOpen={onOpen}
-                    /> */}
-                    <Text key={i}>
+                    />
+                    {/* <Text key={i}>
                       fileId={data.fileId}
                       {/* fileName={data.name}
                     // {/* fileDescription={data.description}  */}
-                    </Text>
+                    {/* </Text>  */}
                   </>
                 ))}
           </SimpleGrid>
