@@ -17,6 +17,8 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 import { ethers } from "ethers";
 import SetFileForSaleModal from "../Modals/SetFileForSaleModal";
+import ShareFileModal from "../Modals/ShareFileModal";
+
 import Pagination from "../Pagination/Pagination";
 
 const AllUploadedFiles = () => {
@@ -29,7 +31,7 @@ const AllUploadedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
-  console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
+  // console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
 
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {
@@ -48,7 +50,7 @@ const AllUploadedFiles = () => {
       // Set the files state variable
       setFiles(files);
 
-      console.log("files: ", files);
+      // console.log("files: ", files);
     };
 
     fetchAllMyUploadedFiles();
@@ -85,6 +87,13 @@ const AllUploadedFiles = () => {
                     fileId={data.fileId}
                   />
 
+                  {/* <ShareFileModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    fileId={data.fileId}
+                  /> */}
+
                   <Tr key={i}>
                     <Td>{data.name}</Td>
                     <Td>
@@ -106,12 +115,27 @@ const AllUploadedFiles = () => {
                         colorScheme="teal"
                         backgroundColor="black"
                         size="lg"
+                        marginX={"10px"}
                         _hover={{
                           backgroundColor: "blackAlpha.800",
                         }}
                       >
                         Set File For Sale
                       </Button>
+                      {/* My work */}
+                      {/* <Button
+                        onClick={onOpen}
+                        colorScheme="teal"
+                        backgroundColor="green"
+                        size="lg"
+                        _hover={{
+                          backgroundColor: "blackAlpha.800",
+                        }}
+                      >
+                        Share My file
+                      </Button> */}
+
+                      {/* Exit my work */}
                     </Td>
                   </Tr>
                 </>

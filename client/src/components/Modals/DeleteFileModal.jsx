@@ -9,9 +9,39 @@ import {
   AlertDialogOverlay,
 } from "@chakra-ui/react";
 
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ethers } from "ethers";
+
 export default function DeleteFileModal(props) {
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onOpen, onClose, fileId } = props;
   const cancelRef = React.useRef();
+
+  const navigate = useNavigate();
+
+  const handleFileDelete = async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
+
+      const tx = await contract.deleteFile(fileId);
+      onClose();
+
+      await tx.wait();
+      toast.success("File Deleted Successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -34,7 +64,7 @@ export default function DeleteFileModal(props) {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={onClose} ml={3}>
+              <Button colorScheme="red" onClick={handleFileDelete} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

@@ -13,8 +13,12 @@ import {
 import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import React, { useEffect } from "react";
+import { ethers } from "ethers";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 
 import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
 
 const CardComponent = (props) => {
   const navigate = useNavigate();
@@ -29,28 +33,36 @@ const CardComponent = (props) => {
     filePrice,
   } = props;
 
-  useEffect(() => {
-    console.log("---", fileId);
-  }, []);
+  // useEffect(() => {
+  //   console.log("---", fileId);
+  // }, []);
+  const { ethereum } = window;
 
-  const handleBuy = async (fileId) => {
-    // try {
-    //   // console.log(fileId);
-    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //   const signer = provider.getSigner();
-    //   const contract = new ethers.Contract(
-    //     FileStorageMarketplace.address,
-    //     FileStorageMarketplace.abi,
-    //     signer
-    //   );
-    //   const tx = await contract.buyFile(fileId);
-    //   await tx.wait();
-    //   // toast.success("File Buy successfully Successfully");
-    //   navigate("/dashboard");
-    // } catch (error) {
-    //   // toast.error(error.message);
-    //   console.log("fileId");
-    // }
+  const handleBuy = async (fileId, filePrice) => {
+    console.log(fileId);
+    console.log(filePrice);
+
+    // if (!ethereum) return alert("Please install Metamask");
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      FileStorageMarketplace.address,
+      FileStorageMarketplace.abi,
+      signer
+    );
+
+    filePrice = ethers.utils.parseEther(filePrice);
+    const walletAddress = await signer.getAddress();
+    console.log({ filePrice, signer, walletAddress });
+
+    const tx = await contract.buyFile(fileId, {
+      from: walletAddress,
+      value: filePrice._hex,
+    });
+    await tx.wait();
+    toast.success("File Purchased Successfully");
+    navigate("/dashboard");
   };
 
   return (
@@ -133,7 +145,7 @@ const CardComponent = (props) => {
           _hover={{
             backgroundColor: "blackAlpha.800",
           }}
-          onClick={handleBuy(fileId)}
+          onClick={() => handleBuy(fileId, filePrice)}
         >
           Buy File
         </Button>

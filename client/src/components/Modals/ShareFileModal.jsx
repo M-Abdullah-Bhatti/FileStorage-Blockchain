@@ -32,7 +32,7 @@ export default function ShareFileModal(props) {
         signer
       );
 
-      const tx = await contract.shareFile(fileId, "sharedAddress");
+      const tx = await contract.shareFile(fileId, sharedAddress);
       onClose();
 
       await tx.wait();
