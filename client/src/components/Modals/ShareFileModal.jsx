@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -12,18 +12,42 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ethers } from "ethers";
 
 export default function ShareFileModal(props) {
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onOpen, onClose, fileId } = props;
+  const [sharedAddress, setSharedAddress] = useState("");
+  const navigate = useNavigate();
 
-  const initialRef = React.useRef(null);
-  const finalRef = React.useRef(null);
+  const handleShareFile = async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
+
+      const tx = await contract.shareFile(fileId, "sharedAddress");
+      onClose();
+
+      await tx.wait();
+      toast.success("File Shared Successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
       <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
         size="xl" // sets the size of the modal
@@ -40,12 +64,16 @@ export default function ShareFileModal(props) {
           <ModalBody pb={6}>
             <FormControl mt={4}>
               <FormLabel>To:</FormLabel>
-              <Input placeholder="Paste the address of the user" />
+              <Input
+                value={sharedAddress}
+                onChange={(e) => setSharedAddress(e.target.value)}
+                placeholder="Paste the address of the user"
+              />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button onClick={handleShareFile} colorScheme="blue" mr={3}>
               Share File
             </Button>
             <Button onClick={onClose}>Cancel</Button>

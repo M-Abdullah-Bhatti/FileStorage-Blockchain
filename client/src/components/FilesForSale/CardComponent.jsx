@@ -13,7 +13,18 @@ import {
 import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
-const CardComponent = ({ data, onOpen }) => {
+const CardComponent = (props) => {
+  // console.log("Props.dataaaaaaaaaaa" + props.data.fileId);
+  const {
+    onOpen,
+    fileId,
+    fileName,
+    fileDescription,
+    fileOwner,
+    fileHash,
+    filePrice,
+  } = props;
+
   return (
     <Card>
       <CardHeader
@@ -24,7 +35,7 @@ const CardComponent = ({ data, onOpen }) => {
       >
         <Heading fontFamily="auto" size="md">
           {" "}
-          File id # {data.fileId}
+          File id # {fileId}
         </Heading>
         <Tooltip label="Share File" placement="auto">
           <Button onClick={onOpen}>
@@ -38,14 +49,14 @@ const CardComponent = ({ data, onOpen }) => {
             {" "}
             Name:{" "}
           </Text>
-          {data.name}
+          {fileName}
         </Text>
         <Text fontFamily="auto" textAlign="left" marginBottom="0.5em">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Description:{" "}
           </Text>
-          {data.description}
+          {fileDescription}
         </Text>
 
         <Text fontFamily="auto" textAlign="left" marginBottom="0.5em">
@@ -53,7 +64,8 @@ const CardComponent = ({ data, onOpen }) => {
             {" "}
             Owner:{" "}
           </Text>
-          {`${data.owner.slice(0, 16)}....${data.owner.slice(-4)}`}
+          abalfalfnasl
+          {/* {`${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`} */}
         </Text>
 
         <Text
@@ -68,10 +80,12 @@ const CardComponent = ({ data, onOpen }) => {
           <Link
             fontWeight="light"
             fontSize="md"
-            href="https://chakra-ui.com"
+            href={`https://gateway.pinata.cloud/ipfs/${fileHash}`}
             isExternal
           >
-            {data.link} <ExternalLinkIcon mx="2px" />
+            {/* {fileHash.slice(0, 15) + "..." + fileHash.slice(-10)}{" "} */}
+            abdjadajfbafbafbafbakbfas
+            <ExternalLinkIcon mx="2px" />
           </Link>
         </Text>
         <Text fontFamily="auto" textAlign="left">
@@ -79,7 +93,8 @@ const CardComponent = ({ data, onOpen }) => {
             {" "}
             Price:{" "}
           </Text>
-          {data.price} ETH
+          lnladd
+          {/* {filePrice} ETH */}
         </Text>
       </CardBody>
       <CardFooter>

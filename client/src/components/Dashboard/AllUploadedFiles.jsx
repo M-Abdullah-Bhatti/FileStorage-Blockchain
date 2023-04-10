@@ -29,6 +29,7 @@ const AllUploadedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
+  console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
 
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {

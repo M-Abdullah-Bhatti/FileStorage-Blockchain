@@ -1,24 +1,52 @@
 import { SimpleGrid, Box, Text } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import ShareFileModal from "../Modals/ShareFileModal";
-import { dummyCardsData } from "../../data";
-import { useState } from "react";
+import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import { ethers } from "ethers";
+import { useState, useEffect } from "react";
 import Pagination from "../Pagination/Pagination";
 import CardComponent from "./CardComponent";
 
 export default function CardsSection({ isHomePage }) {
+  const [sharedFiles, setSharedFiles] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dummyCardsData.slice(indexOfFirstItem, indexOfLastItem);
-  const showPagination = dummyCardsData.length > itemsPerPage ? true : false;
+  let currentItems;
+  // const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
 
+  // console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
+
+  const showPagination = sharedFiles.length > itemsPerPage ? true : false;
+
+  useEffect(() => {
+    const fetchGetFilesForSale = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
+
+      const sharedFiles = await contract.getFilesForSale();
+      console.log("Shared Files  " + sharedFiles);
+
+      // Set the files state variable
+      setSharedFiles(sharedFiles);
+    };
+
+    fetchGetFilesForSale();
+  }, []);
+
+  currentItems = sharedFiles?.slice(3, 8);
+  console.log("Currentee " + currentItems);
   return (
     <>
-      {dummyCardsData.length === 0 ? (
+      {sharedFiles.length === 0 ? (
         <Box
           minHeight={"60vh"}
           display={"flex"}
@@ -29,7 +57,6 @@ export default function CardsSection({ isHomePage }) {
         </Box>
       ) : (
         <Box paddingBottom={10}>
-          <ShareFileModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
           <SimpleGrid
             spacing={10}
             templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
@@ -39,20 +66,64 @@ export default function CardsSection({ isHomePage }) {
             backgroundColor="#f2fffe"
           >
             {isHomePage
-              ? currentItems
-                  .slice(0, 3)
-                  .map((data, i) => (
-                    <CardComponent data={data} key={i} onOpen={onOpen} />
-                  ))
+              ? currentItems.slice(0, 3).map((data, i) => (
+                  <Box>
+                    {/* <ShareFileModal
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                      fileId={data.fileId}
+                    /> */}
+                    {/* <CardComponent
+                      fileId={data.fileId}
+                      fileName={data.name}
+                      fileDescription={data.description}
+                      // fileOwner={data.owner.toString()}
+                      // fileHash={data.hash}
+                      // filePrice={ethers.utils
+                      //   .formatEther(data.price)
+                      //   .toString()}
+                      onOpen={onOpen}
+                    /> */}
+                    {/* <Text>
+                      fileId={data.fileId}
+                      fileName={data.name}
+                      fileDescription={data.description}
+                    </Text> */}
+                  </Box>
+                ))
               : currentItems.map((data, i) => (
-                  <CardComponent data={data} key={i} onOpen={onOpen} />
+                  <>
+                    <ShareFileModal
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                      fileId={data.fileId}
+                    />
+                    {/* <CardComponent
+                      fileId={data.fileId}
+                      fileName={data.name}
+                      fileDescription={data.description}
+                      // fileOwner={data.owner.toString()}
+                      // fileHash={data.hash.}
+                      // filePrice={ethers.utils
+                      //   .formatEther(data.price)
+                      //   .toString()}
+                      onOpen={onOpen}
+                    /> */}
+                    <Text key={i}>
+                      fileId={data.fileId}
+                      {/* fileName={data.name}
+                    // {/* fileDescription={data.description}  */}
+                    </Text>
+                  </>
                 ))}
           </SimpleGrid>
 
           {!isHomePage && showPagination && (
             <Pagination
               itemsPerPage={itemsPerPage}
-              totalItems={dummyCardsData.length}
+              totalItems={sharedFiles.length}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
