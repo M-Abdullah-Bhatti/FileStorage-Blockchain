@@ -38,7 +38,7 @@ export default function ShareFileModal(props) {
       await tx.wait();
       toast.success("File Shared Successfully");
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/");
       }, 3000);
     } catch (error) {
       toast.error(error.message);

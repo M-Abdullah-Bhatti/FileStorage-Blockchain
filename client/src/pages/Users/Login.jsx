@@ -13,6 +13,7 @@ import axios from "axios";
 // import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login({ handleLogin }) {
   const [email, setEmail] = useState("");
@@ -21,7 +22,6 @@ export default function Login({ handleLogin }) {
 
   // function to login user:
   const handleLoginSubmit = async () => {
-    console.log("asdfdasf");
     try {
       await axios
         .post("http://localhost:5000/api/user/login", {
@@ -29,12 +29,13 @@ export default function Login({ handleLogin }) {
           password,
         })
         .then((result) => {
-          // toast.success("Nft created successfully");
-          console.log("user login successfully", result.data.token);
+          toast.success("user login successfully");
+          // console.log("user login successfully", result.data.token);
           handleLogin(result.data.token);
+          localStorage.setItem("email", email);
           navigate("/");
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => console.log(error));
     } catch (error) {
       console.log(error.message);
     }

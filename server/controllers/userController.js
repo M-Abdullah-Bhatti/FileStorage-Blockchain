@@ -35,8 +35,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    res.status(400).json({ message: "user already exist" });
+    // throw new Error("User already exists");
   }
   const user = await User.create({
     username,
@@ -62,7 +62,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //access private
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findOne({ email: req.params.email });
 
   if (user) {
     res.json({
@@ -71,8 +71,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    res.status(404).json({
+      message: "user not found",
+    });
   }
 });
 

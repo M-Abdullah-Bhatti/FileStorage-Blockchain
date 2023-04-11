@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import NavLink from "./NavLink";
 import NavButtons from "./NavButtons";
+import { useNavigate } from "react-router-dom";
 
 const Links = [
   {
@@ -36,6 +37,8 @@ const Links = [
 ];
 
 export default function Navbar({ isLoggedIn, handleLogout }) {
+  const navigate = useNavigate();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogoutSubmit = async () => {
@@ -110,7 +113,9 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
                     <Avatar size={"lg"} src={"/profile.png"} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Profile Settings</MenuItem>
+                    <MenuItem onClick={() => navigate("/profile")}>
+                      Profile Settings
+                    </MenuItem>
                     <MenuDivider />
                     <MenuItem onClick={handleLogoutSubmit}>Logout</MenuItem>
                   </MenuList>

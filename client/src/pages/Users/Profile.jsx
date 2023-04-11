@@ -12,43 +12,91 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function Signup() {
+export default function Profile() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   // function to signup user:
-  const handleSignupSubmit = async () => {
+  const handleProfileUpdate = async () => {
     try {
       await axios
-        .post("http://localhost:5000/api/user/signup", {
+        .put("http://localhost:5000/api/user/profile", {
           username,
           email,
-          password,
         })
         .then((result) => {
           // toast.success("Nft created successfully");
-          toast.success("user register successfully");
-          navigate("/login");
+          toast.success(" profile updated successfully");
+          navigate("/");
           // setTimeout(() => {
           //   window.location.reload(true);
           // }, "2000");
         })
 
         .catch((error) => toast.error(error.response.data.message));
+      //   await axios
+      //     .post("http://localhost:5000/api/user/signup", {
+      //       username,
+      //       email,
+      //       password,
+      //     })
+      //     .then((result) => {
+      //       // toast.success("Nft created successfully");
+      //       toast.success("user register successfully");
+      //       navigate("/login");
+      //       // setTimeout(() => {
+      //       //   window.location.reload(true);
+      //       // }, "2000");
+      //     })
+      // .catch((error) => toast.error(error.response.data.message));
     } catch (error) {
       console.log("catch error: ", error.message);
     }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      let parEmail = localStorage.getItem("email");
+      console.log(parEmail);
+      const { data } = await axios.get(
+        `http://localhost:5000/api/user/profile/${parEmail}`
+      );
+      //   console.log(data);
+
+      if (data) {
+        setEmail(data.email);
+        setUserName(data.username);
+      } else {
+        setEmail("");
+        setUserName("");
+      }
+    };
+    fetchUserData();
+    // if (user) {
+    //   setOwnerContact(user.phoneNo);
+    //   setOwnerName(user.name);
+    // }
+
+    // if (error) {
+    //   alert.error(error);
+    //   dispatch(clearErrors());
+    // }
+
+    // if (success) {
+    //   alert.success("Property Created Successfully");
+    //   history.push("/");
+    //   dispatch({ type: NEW_PROPERTY_RESET });
+    // }
+  }, []);
 
   return (
     <Flex
@@ -67,7 +115,7 @@ export default function Signup() {
             fontFamily={"auto"}
             textColor="#0d8775"
           >
-            CREATE ACCOUNT
+            UPDATE ACCOUNT
           </Heading>
         </Stack>
         <Box
@@ -97,30 +145,10 @@ export default function Signup() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <InputRightElement h={"full"}>
-                  <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
+
             <Stack spacing={10} pt={2}>
               <Button
-                onClick={handleSignupSubmit}
+                onClick={handleProfileUpdate}
                 marginX="auto"
                 backgroundColor="black"
                 textColor="white"
@@ -130,16 +158,8 @@ export default function Signup() {
                   backgroundColor: "blackAlpha.800",
                 }}
               >
-                Sign up
+                UPDATE
               </Button>
-            </Stack>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?{" "}
-                <Link to="/login" fontSize="lg">
-                  Login
-                </Link>
-              </Text>
             </Stack>
           </Stack>
         </Box>

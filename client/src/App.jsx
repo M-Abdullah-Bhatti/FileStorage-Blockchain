@@ -10,6 +10,8 @@ import Home from "./pages/Home/Home";
 import FilesForSale from "./pages/FilesForSale/FilesForSale";
 import Footer from "./components/Footer/Footer";
 import UploadFile from "./pages/UploadFile/UploadFile";
+import Profile from "./pages/Users/Profile";
+
 import useAuthentication from "./customHooks/useAuthentication";
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <Route path="/filesforsale" element={<FilesForSale />} />
         <Route path="/uploadfile" element={<UploadFile />} />
         <Route path="/dashboard" element={<Dashboard />} />
+
         <Route
           exact
           path="/signup"
@@ -30,6 +33,7 @@ function App() {
           element={<SignUp />}
         />
         <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </div>

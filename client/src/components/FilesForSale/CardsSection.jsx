@@ -12,7 +12,7 @@ export default function CardsSection({ isHomePage }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 6;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);

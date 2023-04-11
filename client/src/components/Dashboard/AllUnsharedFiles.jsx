@@ -99,7 +99,7 @@ const AllUnsharedFiles = () => {
                     0,
                     16
                   )}....${data?.sharedWith?.slice(-8)}`}</Td> */}
-                    <Td>{Number(data.price)}</Td>
+                    <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
                     <Td>
                       <Button
                         onClick={onOpen}
