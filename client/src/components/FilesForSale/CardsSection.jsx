@@ -105,11 +105,6 @@ export default function CardsSection({ isHomePage }) {
                         .toString()}
                       onOpen={onOpen}
                     />
-                    {/* <Text key={i}>
-                      fileId={data.fileId}
-                      {/* fileName={data.name}
-                    // {/* fileDescription={data.description}  */}
-                    {/* </Text>  */}
                   </>
                 ))}
           </SimpleGrid>

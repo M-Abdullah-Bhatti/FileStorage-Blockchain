@@ -18,8 +18,11 @@ import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 import { ethers } from "ethers";
 import SetFileForSaleModal from "../Modals/SetFileForSaleModal";
 import ShareFileModal from "../Modals/ShareFileModal";
+import JSEncrypt from "jsencrypt";
 
 import Pagination from "../Pagination/Pagination";
+
+import axios from "axios";
 
 const AllUploadedFiles = () => {
   const [files, setFiles] = useState([]);
@@ -31,7 +34,6 @@ const AllUploadedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
-  // console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
 
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {
@@ -50,11 +52,37 @@ const AllUploadedFiles = () => {
       // Set the files state variable
       setFiles(files);
 
-      // console.log("files: ", files);
+      console.log("files: ", files);
+      // console.log("files: ", files.hash);
     };
 
     fetchAllMyUploadedFiles();
+    getOriginalHash();
   }, []);
+
+  const getOriginalHash = async (hash) => {
+    let encryptor = new JSEncrypt({ default_key_size: 2048 });
+
+    console.log("============");
+
+    // files.forEach(async (item, index) => {
+    //   console.log("This time this console: ", hash);
+    //   await axios
+    //     .get("http://localhost:5000/api/hash/getPrivateKey", {
+    //       hashvalue:
+    //         "Q02Pi3MAJyDdwE7VyDDCQFGlwY6JOEVDHTWGjJu7TwybhRJXUt7oh9LH22mmctoOhgChUaDa8mtFMGKdSysQq7dztfAYvN/nlyLMR4dSVBQpKyyALN5zdovcv8NFYazfGUdl0QI6E1DXR3XR4IXwN+/bMBSnrya/d7hLNKrTXFtdjqZH+jJq/M11QO8qj2j0iZDt5N/3BGH7QFaMxZbYaWhu1GpwfPQnP+cRC7QLwBUANUWHw6OEXepTpcf+cCHBkIDxP2jQR9sQgGwR5vUOPloSo4g9gOlXJgYsfwD5df34N/mw0swARf1XgxHadZE/GXUVeGZzbWkmUnUaJONOEg==",
+    //     })
+    //     .then((res) => console.log(res))
+
+    //     .catch((err) => console.log(err.response.data.message));
+    //   // console.log("data: ", data);
+
+    //   // console.log("pk: ", data.privateKey);
+    // });
+
+    // const privateKey = localStorage.getItem("privateKey");
+    // const encrypthash = localStorage.getItem("encrypthash");
+  };
 
   return (
     <TabPanel>
@@ -103,7 +131,10 @@ const AllUploadedFiles = () => {
                         href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
                         isExternal
                       >
-                        {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
+                        {/* {getOriginalHash(data.hash)} */}
+                        {data.hash.slice(0, 20) +
+                          "..." +
+                          data.hash.slice(-20)}{" "}
                         <ExternalLinkIcon mx="2px" />
                       </Link>
                     </Td>
