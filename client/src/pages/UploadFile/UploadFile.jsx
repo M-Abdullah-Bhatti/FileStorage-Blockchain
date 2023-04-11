@@ -47,28 +47,28 @@ const ipfs = create({
 //   console.log("============");
 
 export default function UploadFile() {
-  useEffect(() => {
-    const getOriginalHash = async () => {
-      let encryptor = new JSEncrypt({ default_key_size: 2048 });
+  // useEffect(() => {
+  //   const getOriginalHash = async () => {
+  //     let encryptor = new JSEncrypt({ default_key_size: 2048 });
 
-      let hashvalue =
-        "T6ENg4nH3gG3Itojvy5fLGrXQnoXSB/zFnUmDEKpfmEfol8iN/TZaKNfNeo7IiyXip+7HH9fk3jQoobSsE+K/v1htFL6hqOImhRtCbEZJu4bY77LLaaAywYP4lYlNPcANOMnE2+ETJlS5oQNL4ROUe5y5uYi++km/GjlwbjwNFYpiL4d/BJUXBMaNspEJYMZqP7m0t3GG/+w4d27qsrUSkwlWWqr8slGecbrClT1yDxX2AnZIb+/5fHDDfPnrLxAAN9CVOGPYeryhSuiXRHqX39K20ajmo0D5eBkcgcraDCJOXnHABgAl36ey43V4CqdZyhFx+jbHCOhcYjr52taxA==";
-      const { data } = await axios.post(
-        "http://localhost:5000/api/hash/getPrivateKey",
-        {
-          hashvalue: hashvalue,
-        }
-      );
-      console.log(data.privateKey);
+  //     let hashvalue =
+  //       "T6ENg4nH3gG3Itojvy5fLGrXQnoXSB/zFnUmDEKpfmEfol8iN/TZaKNfNeo7IiyXip+7HH9fk3jQoobSsE+K/v1htFL6hqOImhRtCbEZJu4bY77LLaaAywYP4lYlNPcANOMnE2+ETJlS5oQNL4ROUe5y5uYi++km/GjlwbjwNFYpiL4d/BJUXBMaNspEJYMZqP7m0t3GG/+w4d27qsrUSkwlWWqr8slGecbrClT1yDxX2AnZIb+/5fHDDfPnrLxAAN9CVOGPYeryhSuiXRHqX39K20ajmo0D5eBkcgcraDCJOXnHABgAl36ey43V4CqdZyhFx+jbHCOhcYjr52taxA==";
+  // const { data } = await axios.post(
+  //   "http://localhost:5000/api/hash/getPrivateKey",
+  //   {
+  //     hashvalue: hashvalue,
+  //   }
+  // );
+  // console.log(data.privateKey);
 
-      encryptor.setPrivateKey(data.privateKey);
-      let decrypted = encryptor.decrypt(hashvalue);
-      console.log(decrypted);
-      // console.log(`https://gateway.pinata.cloud/ipfs/${decrypted}`);
-    };
+  //     encryptor.setPrivateKey(data.privateKey);
+  //     let decrypted = encryptor.decrypt(hashvalue);
+  //     console.log(decrypted);
+  //     // console.log(`https://gateway.pinata.cloud/ipfs/${decrypted}`);
+  //   };
 
-    getOriginalHash();
-  }, []);
+  //   getOriginalHash();
+  // }, []);
 
   const navigate = useNavigate();
   let encryptor = new JSEncrypt({ default_key_size: 2048 });
@@ -105,20 +105,20 @@ export default function UploadFile() {
         `https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`
       );
 
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      // const signer = provider.getSigner();
-      // const contract = new ethers.Contract(
-      //   FileStorageMarketplace.address,
-      //   FileStorageMarketplace.abi,
-      //   signer
-      // );
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        FileStorageMarketplace.address,
+        FileStorageMarketplace.abi,
+        signer
+      );
 
-      // const tx = await contract.uploadFile(
-      //   fileInfo.name,
-      //   fileInfo.description,
-      //   encryptedHash
-      // );
-      // await tx.wait();
+      const tx = await contract.uploadFile(
+        fileInfo.name,
+        fileInfo.description,
+        encryptedHash
+      );
+      await tx.wait();
 
       await axios
         .post("http://localhost:5000/api/hash", {

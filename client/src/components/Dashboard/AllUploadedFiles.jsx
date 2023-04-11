@@ -23,8 +23,10 @@ import JSEncrypt from "jsencrypt";
 import Pagination from "../Pagination/Pagination";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AllUploadedFiles = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -35,6 +37,70 @@ const AllUploadedFiles = () => {
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
 
+  const [hash, setHash] = useState("");
+  const [fileContent, setFileContent] = useState("");
+
+  // const getOriginalHash = async () => {
+  //   let encryptor = new JSEncrypt({ default_key_size: 2048 });
+
+  //   console.log("******************");
+
+  //   // files.forEach(async (item, index) => {
+  //   // console.log("This time this console: ", hash);
+
+  //   files.forEach(async (item, index) => {
+  //     // console.log("item.hash");
+  //     console.log("files hash: ", item.hash);
+  //     const { data } = await axios.post(
+  //       "http://localhost:5000/api/hash/getPrivateKey",
+  //       {
+  //         hashvalue: item.hash,
+  //       }
+  //     );
+
+  //     // console.log(data.privateKey);
+  //     encryptor.setPrivateKey(data.privateKey);
+  //     let decrypted = encryptor.decrypt(item.hash);
+  //     console.log(decrypted);
+
+  //     // ====================================================
+
+  //     // item.hash = decrypted;
+  //   });
+
+  //   // await axios
+  //   //   .get("http://localhost:5000/api/hash/getPrivateKey", {
+  //   //     hashvalue: files.hash,
+  //   //   })
+  //   //   .then((res) => {
+  //   //     console.log("000000");
+  //   //     console.log("res: ", res);
+  //   //   })
+
+  //   //   .catch((err) => console.log(err.response.data.message));
+  //   // console.log("data: ", data);
+
+  //   // console.log("pk: ", data.privateKey);
+  //   // });
+  // };
+
+  const click = async (hash) => {
+    console.log("click");
+    let encryptor = new JSEncrypt({ default_key_size: 2048 });
+
+    const { data } = await axios.post(
+      "http://localhost:5000/api/hash/getPrivateKey",
+      {
+        hashvalue: hash,
+      }
+    );
+    // console.log(data.privateKey);
+
+    encryptor.setPrivateKey(data.privateKey);
+    let decrypted = encryptor.decrypt(hash);
+    console.log(decrypted);
+    window.open(decrypted, "_blank");
+  };
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {
       // Connect to the contract using ethers.js
@@ -52,37 +118,40 @@ const AllUploadedFiles = () => {
       // Set the files state variable
       setFiles(files);
 
+      console.log("files:============================== ");
       console.log("files: ", files);
-      // console.log("files: ", files.hash);
+      // files.forEach(async (item, index) => {
+      //   console("item.hash");
+      // });
+      // console.log("files hash: ", files.hash);
     };
 
     fetchAllMyUploadedFiles();
-    getOriginalHash();
+    // getOriginalHash();
   }, []);
 
-  const getOriginalHash = async (hash) => {
-    let encryptor = new JSEncrypt({ default_key_size: 2048 });
+  // useEffect(() => {
+  //   const getOriginalHash = async () => {
+  //     let encryptor = new JSEncrypt({ default_key_size: 2048 });
 
-    console.log("============");
+  //     let hashvalue =
+  //       "T6ENg4nH3gG3Itojvy5fLGrXQnoXSB/zFnUmDEKpfmEfol8iN/TZaKNfNeo7IiyXip+7HH9fk3jQoobSsE+K/v1htFL6hqOImhRtCbEZJu4bY77LLaaAywYP4lYlNPcANOMnE2+ETJlS5oQNL4ROUe5y5uYi++km/GjlwbjwNFYpiL4d/BJUXBMaNspEJYMZqP7m0t3GG/+w4d27qsrUSkwlWWqr8slGecbrClT1yDxX2AnZIb+/5fHDDfPnrLxAAN9CVOGPYeryhSuiXRHqX39K20ajmo0D5eBkcgcraDCJOXnHABgAl36ey43V4CqdZyhFx+jbHCOhcYjr52taxA==";
+  // const { data } = await axios.post(
+  //   "http://localhost:5000/api/hash/getPrivateKey",
+  //   {
+  //     hashvalue: hashvalue,
+  //   }
+  // );
+  // console.log(data.privateKey);
 
-    // files.forEach(async (item, index) => {
-    //   console.log("This time this console: ", hash);
-    //   await axios
-    //     .get("http://localhost:5000/api/hash/getPrivateKey", {
-    //       hashvalue:
-    //         "Q02Pi3MAJyDdwE7VyDDCQFGlwY6JOEVDHTWGjJu7TwybhRJXUt7oh9LH22mmctoOhgChUaDa8mtFMGKdSysQq7dztfAYvN/nlyLMR4dSVBQpKyyALN5zdovcv8NFYazfGUdl0QI6E1DXR3XR4IXwN+/bMBSnrya/d7hLNKrTXFtdjqZH+jJq/M11QO8qj2j0iZDt5N/3BGH7QFaMxZbYaWhu1GpwfPQnP+cRC7QLwBUANUWHw6OEXepTpcf+cCHBkIDxP2jQR9sQgGwR5vUOPloSo4g9gOlXJgYsfwD5df34N/mw0swARf1XgxHadZE/GXUVeGZzbWkmUnUaJONOEg==",
-    //     })
-    //     .then((res) => console.log(res))
+  // encryptor.setPrivateKey(data.privateKey);
+  // let decrypted = encryptor.decrypt(hashvalue);
+  // console.log(decrypted);
+  //     // console.log(`https://gateway.pinata.cloud/ipfs/${decrypted}`);
+  //   };
 
-    //     .catch((err) => console.log(err.response.data.message));
-    //   // console.log("data: ", data);
-
-    //   // console.log("pk: ", data.privateKey);
-    // });
-
-    // const privateKey = localStorage.getItem("privateKey");
-    // const encrypthash = localStorage.getItem("encrypthash");
-  };
+  //   getOriginalHash();
+  // }, []);
 
   return (
     <TabPanel>
@@ -128,7 +197,8 @@ const AllUploadedFiles = () => {
                       <Link
                         fontWeight="light"
                         fontSize="md"
-                        href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
+                        onClick={() => click(data.hash)}
+                        // href={`https://gateway.pinata.cloud/ipfs/${data.hash}`}
                         isExternal
                       >
                         {/* {getOriginalHash(data.hash)} */}
@@ -155,7 +225,7 @@ const AllUploadedFiles = () => {
                       </Button>
                       {/* My work */}
                       {/* <Button
-                        onClick={onOpen}
+                        onClick={DownloadFile}
                         colorScheme="teal"
                         backgroundColor="green"
                         size="lg"
@@ -163,7 +233,7 @@ const AllUploadedFiles = () => {
                           backgroundColor: "blackAlpha.800",
                         }}
                       >
-                        Share My file
+                        Download
                       </Button> */}
 
                       {/* Exit my work */}
