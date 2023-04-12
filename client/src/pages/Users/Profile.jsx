@@ -23,19 +23,23 @@ export default function Profile() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   // function to signup user:
   const handleProfileUpdate = async () => {
+    let prevEmail = localStorage.getItem("email");
+
     try {
       await axios
         .put("http://localhost:5000/api/user/profile", {
           username,
-          email,
+          newEmail,
+          prevEmail,
         })
         .then((result) => {
           // toast.success("Nft created successfully");
           toast.success(" profile updated successfully");
+          localStorage.setItem("email", newEmail);
           navigate("/");
           // setTimeout(() => {
           //   window.location.reload(true);
@@ -43,21 +47,6 @@ export default function Profile() {
         })
 
         .catch((error) => toast.error(error.response.data.message));
-      //   await axios
-      //     .post("http://localhost:5000/api/user/signup", {
-      //       username,
-      //       email,
-      //       password,
-      //     })
-      //     .then((result) => {
-      //       // toast.success("Nft created successfully");
-      //       toast.success("user register successfully");
-      //       navigate("/login");
-      //       // setTimeout(() => {
-      //       //   window.location.reload(true);
-      //       // }, "2000");
-      //     })
-      // .catch((error) => toast.error(error.response.data.message));
     } catch (error) {
       console.log("catch error: ", error.message);
     }
@@ -65,37 +54,22 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      let parEmail = localStorage.getItem("email");
-      console.log(parEmail);
+      let prevEmail = localStorage.getItem("email");
+      // console.log(parEmail);
       const { data } = await axios.get(
-        `http://localhost:5000/api/user/profile/${parEmail}`
+        `http://localhost:5000/api/user/profile/${prevEmail}`
       );
       //   console.log(data);
 
       if (data) {
-        setEmail(data.email);
+        setNewEmail(data.email);
         setUserName(data.username);
       } else {
-        setEmail("");
+        setNewEmail("");
         setUserName("");
       }
     };
     fetchUserData();
-    // if (user) {
-    //   setOwnerContact(user.phoneNo);
-    //   setOwnerName(user.name);
-    // }
-
-    // if (error) {
-    //   alert.error(error);
-    //   dispatch(clearErrors());
-    // }
-
-    // if (success) {
-    //   alert.success("Property Created Successfully");
-    //   history.push("/");
-    //   dispatch({ type: NEW_PROPERTY_RESET });
-    // }
   }, []);
 
   return (
@@ -141,8 +115,8 @@ export default function Profile() {
               <Input
                 type="email"
                 name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
               />
             </FormControl>
 

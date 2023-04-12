@@ -76,17 +76,20 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   }
 });
-
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const updatedUser = await User.findOneAndUpdate(
-    { email: req.body.email },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-      useFindAndModify: false,
-    }
-  );
+  const { username, newEmail, prevEmail } = req.body;
+  const userToUpdate = await User.findOne({ email: prevEmail });
+
+  if (!userToUpdate) {
+    res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  userToUpdate.username = username;
+  userToUpdate.email = newEmail;
+  const updatedUser = await userToUpdate.save();
+
   res.status(200).json({
     success: true,
     updatedUser,

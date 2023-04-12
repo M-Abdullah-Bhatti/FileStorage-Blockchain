@@ -32,6 +32,23 @@ const AllSharedFiles = () => {
   const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = sharedFiles.length > itemsPerPage ? true : false;
 
+  const click = async (hash) => {
+    console.log("click");
+    let encryptor = new JSEncrypt({ default_key_size: 2048 });
+
+    const { data } = await axios.post(
+      "http://localhost:5000/api/hash/getPrivateKey",
+      {
+        hashvalue: hash,
+      }
+    );
+
+    encryptor.setPrivateKey(data.privateKey);
+    let decrypted = encryptor.decrypt(hash);
+    console.log(decrypted);
+    window.open(decrypted, "_blank");
+  };
+
   useEffect(() => {
     const fetchAllMySharedFiles = async () => {
       // Connect to the contract using ethers.js
@@ -111,9 +128,17 @@ const AllSharedFiles = () => {
                   />
                   <Tr key={i}>
                     <Td>{data?.name}</Td>
-                    <Td>{`${data?.hash?.slice(0, 25)}....${data?.hash?.slice(
-                      -8
-                    )}`}</Td>
+                    <Td>
+                      <Link
+                        fontWeight="light"
+                        fontSize="md"
+                        onClick={() => click(data.hash)}
+                        isExternal
+                      >
+                        {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
+                        <ExternalLinkIcon mx="2px" />
+                      </Link>
+                    </Td>
                     <Td>{`${data?.sharedWith?.slice(
                       0,
                       16
