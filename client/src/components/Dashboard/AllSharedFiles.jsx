@@ -10,9 +10,11 @@ import {
   Th,
   Td,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { dummySharedFilesData } from "../../data";
 import Pagination from "../Pagination/Pagination";
+import UnshareFileModal from "../Modals/UnshareFileModal";
 
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 import { ethers } from "ethers";
@@ -20,6 +22,8 @@ import { ethers } from "ethers";
 const AllSharedFiles = () => {
   const [sharedFiles, setSharedFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -72,28 +76,37 @@ const AllSharedFiles = () => {
               </Tr>
             ) : (
               currentItems.map((data, i) => (
-                <Tr key={i}>
-                  <Td>{data?.name}</Td>
-                  <Td>{`${data?.hash?.slice(0, 25)}....${data?.hash?.slice(
-                    -8
-                  )}`}</Td>
-                  <Td>{`${data?.sharedWith?.slice(
-                    0,
-                    16
-                  )}....${data?.sharedWith?.slice(-8)}`}</Td>
-                  <Td>
-                    <Button
-                      colorScheme="teal"
-                      backgroundColor="black"
-                      size="lg"
-                      _hover={{
-                        backgroundColor: "blackAlpha.800",
-                      }}
-                    >
-                      Unshare File
-                    </Button>
-                  </Td>
-                </Tr>
+                <>
+                  <UnshareFileModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                    fileId={Number(data.fileId)}
+                  />
+                  <Tr key={i}>
+                    <Td>{data?.name}</Td>
+                    <Td>{`${data?.hash?.slice(0, 25)}....${data?.hash?.slice(
+                      -8
+                    )}`}</Td>
+                    <Td>{`${data?.sharedWith?.slice(
+                      0,
+                      16
+                    )}....${data?.sharedWith?.slice(-8)}`}</Td>
+                    <Td>
+                      <Button
+                        onClick={onOpen}
+                        colorScheme="teal"
+                        backgroundColor="black"
+                        size="lg"
+                        _hover={{
+                          backgroundColor: "blackAlpha.800",
+                        }}
+                      >
+                        Unshare File
+                      </Button>
+                    </Td>
+                  </Tr>
+                </>
               ))
             )}
           </Tbody>
