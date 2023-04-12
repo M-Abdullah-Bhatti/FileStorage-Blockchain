@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  TabPanel,
   TableContainer,
   Table,
   Thead,
@@ -9,31 +8,32 @@ import {
   Tr,
   Th,
   Td,
+  Link,
   useDisclosure,
+  Box,
   Text,
 } from "@chakra-ui/react";
-import { dummyUnsharedFilesData } from "../../data";
-import Pagination from "../Pagination/Pagination";
-import DeleteFileModal from "../Modals/DeleteFileModal";
-
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
+import UnshareFileModal from "../../components/Modals/UnshareFileModal";
 import { ethers } from "ethers";
+import JSEncrypt from "jsencrypt";
+import Pagination from "../../components/Pagination/Pagination";
+import axios from "axios";
 
-const AllUnsharedFiles = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const AllSharedFiles = () => {
+  const [sharedFiles, setSharedFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [unSharedFiles, setUnSharedFiles] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = unSharedFiles.slice(indexOfFirstItem, indexOfLastItem);
-  const showPagination = unSharedFiles.length > itemsPerPage ? true : false;
+  const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
+  const showPagination = sharedFiles.length > itemsPerPage ? true : false;
 
   useEffect(() => {
-    const fetchAllMyUnSharedFiles = async () => {
+    const fetchAllMySharedFiles = async () => {
       // Connect to the contract using ethers.js
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -44,24 +44,42 @@ const AllUnsharedFiles = () => {
       );
 
       // Call the getAllMyUploadedFiles() function and retrieve the files
-      const files = await contract.getAllMyUnSharedFiles();
+      const files = await contract.getAllMySharedFiles();
 
-      console.log("unSharedFiles: ", files);
+      console.log("sharedFiles: ", files);
       // Set the files state variable
-      setUnSharedFiles(files);
+      setSharedFiles(files);
     };
 
-    fetchAllMyUnSharedFiles();
+    fetchAllMySharedFiles();
   }, []);
 
   return (
-    <TabPanel>
-      {/* <DeleteFileModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-        fileId={unSharedFiles.fileId}
-      /> */}
+    <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+      <Text
+        mb={"2"}
+        fontSize="5xl"
+        textAlign="center"
+        textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
+      >
+        Dashboard
+      </Text>
+
+      <Text
+        mb={"5"}
+        fontSize="3xl"
+        textAlign="center"
+        textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
+      >
+        All My Shared Files
+      </Text>
+
+      {/* Tables */}
+
       <TableContainer>
         <Table size="md" border="1px" borderColor="gray.200">
           <Thead>
@@ -70,46 +88,47 @@ const AllUnsharedFiles = () => {
                 File Name
               </Th>
               <Th fontSize="xl">File Hash</Th>
-              <Th fontSize="xl">File Price</Th>
+              <Th fontSize="xl">Shared With</Th>
               <Th fontSize="xl">Action</Th>
             </Tr>
           </Thead>
+
           <Tbody>
-            {unSharedFiles.length === 0 ? (
+            {sharedFiles.length === 0 ? (
               <Tr>
                 <Text fontSize="3xl" textAlign="center" paddingY={10}>
-                  You haven't got any unshared file
+                  You haven't shared any file
                 </Text>
               </Tr>
             ) : (
               currentItems.map((data, i) => (
                 <>
-                  <DeleteFileModal
+                  <UnshareFileModal
                     isOpen={isOpen}
                     onOpen={onOpen}
                     onClose={onClose}
-                    fileId={data.fileId}
+                    fileId={Number(data.fileId)}
                   />
                   <Tr key={i}>
-                    <Td>{data.name}</Td>
+                    <Td>{data?.name}</Td>
                     <Td>{`${data?.hash?.slice(0, 25)}....${data?.hash?.slice(
                       -8
                     )}`}</Td>
-                    {/* <Td>{`${data?.sharedWith?.slice(
-                    0,
-                    16
-                  )}....${data?.sharedWith?.slice(-8)}`}</Td> */}
-                    <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
+                    <Td>{`${data?.sharedWith?.slice(
+                      0,
+                      16
+                    )}....${data?.sharedWith?.slice(-8)}`}</Td>
                     <Td>
                       <Button
                         onClick={onOpen}
-                        colorScheme="red"
+                        colorScheme="teal"
+                        backgroundColor="black"
                         size="lg"
                         _hover={{
-                          backgroundColor: "red.400",
+                          backgroundColor: "blackAlpha.800",
                         }}
                       >
-                        Delete File
+                        Unshare File
                       </Button>
                     </Td>
                   </Tr>
@@ -122,13 +141,13 @@ const AllUnsharedFiles = () => {
       {showPagination && (
         <Pagination
           itemsPerPage={itemsPerPage}
-          totalItems={dummyUnsharedFilesData.length}
+          totalItems={sharedFiles.length}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
       )}
-    </TabPanel>
+    </Box>
   );
 };
 
-export default AllUnsharedFiles;
+export default AllSharedFiles;

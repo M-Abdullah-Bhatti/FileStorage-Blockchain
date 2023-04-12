@@ -62,7 +62,7 @@ const CardComponent = (props) => {
     });
     await tx.wait();
     toast.success("File Purchased Successfully");
-    navigate("/dashboard");
+    navigate("/myallsharedfiles");
   };
 
   return (

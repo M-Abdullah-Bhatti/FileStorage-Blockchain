@@ -19,13 +19,10 @@ import { Link } from "react-router-dom";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import NavLink from "./NavLink";
 import NavButtons from "./NavButtons";
+import NavLinkDropdown from "./NavLinkDropdown";
 import { useNavigate } from "react-router-dom";
 
 const Links = [
-  {
-    linkText: "Dashboard",
-    linkUrl: "/dashboard",
-  },
   {
     linkText: "Upload File",
     linkUrl: "/uploadfile",
@@ -86,6 +83,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
+              <NavLinkDropdown />
               {Links.map((data) => (
                 <NavLink key={data.linkUrl} data={data} />
               ))}

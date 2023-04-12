@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  TabPanel,
+  Button,
   TableContainer,
   Table,
   Thead,
@@ -8,15 +8,19 @@ import {
   Tr,
   Th,
   Td,
+  Link,
+  useDisclosure,
+  Box,
   Text,
 } from "@chakra-ui/react";
-import { dummyReceivedFilesData } from "../../data";
-import Pagination from "../Pagination/Pagination";
-
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 import { ethers } from "ethers";
+import JSEncrypt from "jsencrypt";
+import Pagination from "../../components/Pagination/Pagination";
+import axios from "axios";
 
-const AllSharedFiles = () => {
+const AllReceivedFiles = () => {
   const [recievedFiles, setRecievedFiles] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +53,31 @@ const AllSharedFiles = () => {
   }, []);
 
   return (
-    <TabPanel>
+    <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+      <Text
+        mb={"2"}
+        fontSize="5xl"
+        textAlign="center"
+        textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
+      >
+        Dashboard
+      </Text>
+
+      <Text
+        mb={"5"}
+        fontSize="3xl"
+        textAlign="center"
+        textTransform="uppercase"
+        textColor="#0d8775"
+        fontFamily="auto"
+      >
+        All My Received Files
+      </Text>
+
+      {/* Tables */}
+
       <TableContainer>
         <Table size="md" border="1px" borderColor="gray.200">
           <Thead>
@@ -89,27 +117,13 @@ const AllSharedFiles = () => {
       {showPagination && (
         <Pagination
           itemsPerPage={itemsPerPage}
-          totalItems={dummyReceivedFilesData.length}
+          totalItems={recievedFiles.length}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
       )}
-    </TabPanel>
+    </Box>
   );
 };
 
-{
-  /* currentItems.map((data, i) => (
-                <Tr key={i}>
-                  <Td>{data.fileName}</Td>
-
-                  <Td>{`${data.fileHash.slice(0, 25)}....${data.fileHash.slice(
-                    -8
-                  )}`}</Td>
-                  <Td>{`${data.sharedBy.slice(0, 16)}....${data.sharedBy.slice(
-                    -8
-                  )}`}</Td>
-                </Tr>
-              )) */
-}
-export default AllSharedFiles;
+export default AllReceivedFiles;

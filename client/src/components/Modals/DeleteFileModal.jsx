@@ -36,7 +36,7 @@ export default function DeleteFileModal(props) {
       await tx.wait();
       toast.success("File Deleted Successfully");
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/myalluploadedfiles");
       }, 3000);
     } catch (error) {
       toast.error(error.message);

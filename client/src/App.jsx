@@ -5,13 +5,15 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Users/Login";
 import SignUp from "./pages/Users/SignUp";
 import Navbar from "./components/Navbar/Navbar";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import AllUploadedFiles from "./pages/Dashboard/AllUploadedFiles";
+import AllSharedFiles from "./pages/Dashboard/AllSharedFiles";
+import AllUnsharedFiles from "./pages/Dashboard/AllUnsharedFiles";
+import AllReceivedFiles from "./pages/Dashboard/AllReceivedFiles";
 import Home from "./pages/Home/Home";
 import FilesForSale from "./pages/FilesForSale/FilesForSale";
 import Footer from "./components/Footer/Footer";
 import UploadFile from "./pages/UploadFile/UploadFile";
 import Profile from "./pages/Users/Profile";
-
 import useAuthentication from "./customHooks/useAuthentication";
 
 function App() {
@@ -24,14 +26,12 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/filesforsale" element={<FilesForSale />} />
         <Route path="/uploadfile" element={<UploadFile />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route
-          exact
-          path="/signup"
-          // element={<SignUp handleSignup={handleLogin} />}
-          element={<SignUp />}
-        />
+        {/* Dashboard Routes */}
+        <Route path="/myalluploadedfiles" element={<AllUploadedFiles />} />
+        <Route path="/myallsharedfiles" element={<AllSharedFiles />} />
+        <Route path="/myallunsharedfiles" element={<AllUnsharedFiles />} />
+        <Route path="/myallreceivedfiles" element={<AllReceivedFiles />} />
+        <Route exact path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login handleLogin={handleLogin} />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
