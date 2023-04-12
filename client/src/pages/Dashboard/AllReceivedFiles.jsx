@@ -19,9 +19,11 @@ import { ethers } from "ethers";
 import JSEncrypt from "jsencrypt";
 import Pagination from "../../components/Pagination/Pagination";
 import axios from "axios";
+import Loader from "../../components/Loader/Loader";
 
 const AllReceivedFiles = () => {
   const [recievedFiles, setRecievedFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -64,90 +66,100 @@ const AllReceivedFiles = () => {
       console.log("recieved files: ", files);
       // Set the files state variable
       setRecievedFiles(files);
+      setLoading(false);
     };
 
     fetchAllMySharedFiles();
   }, []);
 
   return (
-    <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
-      <Text
-        mb={"2"}
-        fontSize="5xl"
-        textAlign="center"
-        textTransform="uppercase"
-        textColor="#0d8775"
-        fontFamily="auto"
-      >
-        Dashboard
-      </Text>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+          <Text
+            mb={"2"}
+            fontSize="5xl"
+            textAlign="center"
+            textTransform="uppercase"
+            textColor="#0d8775"
+            fontFamily="auto"
+          >
+            Dashboard
+          </Text>
 
-      <Text
-        mb={"5"}
-        fontSize="3xl"
-        textAlign="center"
-        textTransform="uppercase"
-        textColor="#0d8775"
-        fontFamily="auto"
-      >
-        All My Received Files
-      </Text>
+          <Text
+            mb={"5"}
+            fontSize="3xl"
+            textAlign="center"
+            textTransform="uppercase"
+            textColor="#0d8775"
+            fontFamily="auto"
+          >
+            All My Received Files
+          </Text>
 
-      {/* Tables */}
+          {/* Tables */}
 
-      <TableContainer>
-        <Table size="md" border="1px" borderColor="gray.200">
-          <Thead>
-            <Tr>
-              <Th paddingY="1em" fontSize="xl">
-                File Name
-              </Th>
-              <Th fontSize="xl">File Hash</Th>
-              <Th fontSize="xl">Shared By</Th>
-            </Tr>
-          </Thead>
-
-          <Tbody>
-            {recievedFiles.length === 0 ? (
-              <Tr>
-                <Text fontSize="3xl" textAlign="center" paddingY={10}>
-                  You haven't shared any file
-                </Text>
-              </Tr>
-            ) : (
-              currentItems.map((data, i) => (
-                <Tr key={i}>
-                  <Td>{data?.name}</Td>
-                  <Td>
-                    <Link
-                      fontWeight="light"
-                      fontSize="md"
-                      onClick={() => click(data.hash)}
-                      isExternal
-                    >
-                      {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
-                      <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  </Td>
-
-                  <Td>{`${data?.owner?.slice(0, 16)}....${data?.owner?.slice(
-                    -8
-                  )}`}</Td>
+          <TableContainer>
+            <Table size="md" border="1px" borderColor="gray.200">
+              <Thead>
+                <Tr>
+                  <Th paddingY="1em" fontSize="xl">
+                    File Name
+                  </Th>
+                  <Th fontSize="xl">File Hash</Th>
+                  <Th fontSize="xl">Shared By</Th>
                 </Tr>
-              ))
-            )}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      {showPagination && (
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          totalItems={recievedFiles.length}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+              </Thead>
+
+              <Tbody>
+                {recievedFiles.length === 0 ? (
+                  <Tr>
+                    <Text fontSize="3xl" textAlign="center" paddingY={10}>
+                      You haven't shared any file
+                    </Text>
+                  </Tr>
+                ) : (
+                  currentItems.map((data, i) => (
+                    <Tr key={i}>
+                      <Td>{data?.name}</Td>
+                      <Td>
+                        <Link
+                          fontWeight="light"
+                          fontSize="md"
+                          onClick={() => click(data.hash)}
+                          isExternal
+                        >
+                          {data.hash.slice(0, 20) +
+                            "..." +
+                            data.hash.slice(-20)}{" "}
+                          <ExternalLinkIcon mx="2px" />
+                        </Link>
+                      </Td>
+
+                      <Td>{`${data?.owner?.slice(
+                        0,
+                        16
+                      )}....${data?.owner?.slice(-8)}`}</Td>
+                    </Tr>
+                  ))
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          {showPagination && (
+            <Pagination
+              itemsPerPage={itemsPerPage}
+              totalItems={recievedFiles.length}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 

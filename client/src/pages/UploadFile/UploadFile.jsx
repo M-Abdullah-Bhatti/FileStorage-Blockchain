@@ -129,7 +129,7 @@ export default function UploadFile() {
           console.log(res);
 
           toast.success("File Uploaded Successfully");
-          navigate("/myalluploadedfiles");
+          navigate("/");
         });
     } catch (error) {
       toast.error(error.message);

@@ -19,6 +19,8 @@ import UnshareFileModal from "../../components/Modals/UnshareFileModal";
 import { ethers } from "ethers";
 import JSEncrypt from "jsencrypt";
 import Pagination from "../../components/Pagination/Pagination";
+import Loader from "../../components/Loader/Loader";
+
 import axios from "axios";
 
 const AllSharedFiles = () => {
@@ -31,6 +33,7 @@ const AllSharedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = sharedFiles.length > itemsPerPage ? true : false;
+  const [loading, setLoading] = useState(true);
 
   const click = async (hash) => {
     console.log("click");
@@ -66,112 +69,121 @@ const AllSharedFiles = () => {
       console.log("sharedFiles: ", files);
       // Set the files state variable
       setSharedFiles(files);
+      setLoading(false);
     };
 
     fetchAllMySharedFiles();
   }, []);
 
   return (
-    <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
-      <Text
-        mb={"2"}
-        fontSize="5xl"
-        textAlign="center"
-        textTransform="uppercase"
-        textColor="#0d8775"
-        fontFamily="auto"
-      >
-        Dashboard
-      </Text>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+          <Text
+            mb={"2"}
+            fontSize="5xl"
+            textAlign="center"
+            textTransform="uppercase"
+            textColor="#0d8775"
+            fontFamily="auto"
+          >
+            Dashboard
+          </Text>
 
-      <Text
-        mb={"5"}
-        fontSize="3xl"
-        textAlign="center"
-        textTransform="uppercase"
-        textColor="#0d8775"
-        fontFamily="auto"
-      >
-        All My Shared Files
-      </Text>
+          <Text
+            mb={"5"}
+            fontSize="3xl"
+            textAlign="center"
+            textTransform="uppercase"
+            textColor="#0d8775"
+            fontFamily="auto"
+          >
+            All My Shared Files
+          </Text>
 
-      {/* Tables */}
+          {/* Tables */}
 
-      <TableContainer>
-        <Table size="md" border="1px" borderColor="gray.200">
-          <Thead>
-            <Tr>
-              <Th paddingY="1em" fontSize="xl">
-                File Name
-              </Th>
-              <Th fontSize="xl">File Hash</Th>
-              <Th fontSize="xl">Shared With</Th>
-              <Th fontSize="xl">Action</Th>
-            </Tr>
-          </Thead>
+          <TableContainer>
+            <Table size="md" border="1px" borderColor="gray.200">
+              <Thead>
+                <Tr>
+                  <Th paddingY="1em" fontSize="xl">
+                    File Name
+                  </Th>
+                  <Th fontSize="xl">File Hash</Th>
+                  <Th fontSize="xl">Shared With</Th>
+                  <Th fontSize="xl">Action</Th>
+                </Tr>
+              </Thead>
 
-          <Tbody>
-            {sharedFiles.length === 0 ? (
-              <Tr>
-                <Text fontSize="3xl" textAlign="center" paddingY={10}>
-                  You haven't shared any file
-                </Text>
-              </Tr>
-            ) : (
-              currentItems.map((data, i) => (
-                <>
-                  <UnshareFileModal
-                    isOpen={isOpen}
-                    onOpen={onOpen}
-                    onClose={onClose}
-                    fileId={Number(data.fileId)}
-                  />
-                  <Tr key={i}>
-                    <Td>{data?.name}</Td>
-                    <Td>
-                      <Link
-                        fontWeight="light"
-                        fontSize="md"
-                        onClick={() => click(data.hash)}
-                        isExternal
-                      >
-                        {data.hash.slice(0, 20) + "..." + data.hash.slice(-20)}{" "}
-                        <ExternalLinkIcon mx="2px" />
-                      </Link>
-                    </Td>
-                    <Td>{`${data?.sharedWith?.slice(
-                      0,
-                      16
-                    )}....${data?.sharedWith?.slice(-8)}`}</Td>
-                    <Td>
-                      <Button
-                        onClick={onOpen}
-                        colorScheme="teal"
-                        backgroundColor="black"
-                        size="lg"
-                        _hover={{
-                          backgroundColor: "blackAlpha.800",
-                        }}
-                      >
-                        Unshare File
-                      </Button>
-                    </Td>
+              <Tbody>
+                {sharedFiles.length === 0 ? (
+                  <Tr>
+                    <Text fontSize="3xl" textAlign="center" paddingY={10}>
+                      You haven't shared any file
+                    </Text>
                   </Tr>
-                </>
-              ))
-            )}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      {showPagination && (
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          totalItems={sharedFiles.length}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+                ) : (
+                  currentItems.map((data, i) => (
+                    <>
+                      <UnshareFileModal
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        fileId={Number(data.fileId)}
+                      />
+                      <Tr key={i}>
+                        <Td>{data?.name}</Td>
+                        <Td>
+                          <Link
+                            fontWeight="light"
+                            fontSize="md"
+                            onClick={() => click(data.hash)}
+                            isExternal
+                          >
+                            {data.hash.slice(0, 20) +
+                              "..." +
+                              data.hash.slice(-20)}{" "}
+                            <ExternalLinkIcon mx="2px" />
+                          </Link>
+                        </Td>
+                        <Td>{`${data?.sharedWith?.slice(
+                          0,
+                          16
+                        )}....${data?.sharedWith?.slice(-8)}`}</Td>
+                        <Td>
+                          <Button
+                            onClick={onOpen}
+                            colorScheme="teal"
+                            backgroundColor="black"
+                            size="lg"
+                            _hover={{
+                              backgroundColor: "blackAlpha.800",
+                            }}
+                          >
+                            Unshare File
+                          </Button>
+                        </Td>
+                      </Tr>
+                    </>
+                  ))
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          {showPagination && (
+            <Pagination
+              itemsPerPage={itemsPerPage}
+              totalItems={sharedFiles.length}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 
