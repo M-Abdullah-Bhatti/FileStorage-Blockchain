@@ -8,8 +8,6 @@ import Pagination from "../Pagination/Pagination";
 import CardComponent from "./CardComponent";
 
 export default function CardsSection({ isHomePage }) {
-  const [account, setAccount] = useState(null);
-
   const [filesForSale, setFilesForSale] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -33,17 +31,6 @@ export default function CardsSection({ isHomePage }) {
         signer
       );
 
-      window.ethereum.on("accountsChanged", async () => {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const account = ethers.utils.getAddress(accounts[0]);
-        setAccount(account);
-        localStorage.setItem("userAddress", account);
-        console.log("jjjjjjjjjjjjjjjj");
-        console.log({ account });
-      });
-
       const filesForSale = await contract.getFilesForSale();
 
       // Set the files state variable
@@ -51,7 +38,7 @@ export default function CardsSection({ isHomePage }) {
     };
 
     fetchGetFilesForSale();
-  }, [account]);
+  }, []);
 
   return (
     <>

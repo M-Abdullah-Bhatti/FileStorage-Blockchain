@@ -22,9 +22,9 @@ import { toast } from "react-toastify";
 
 const CardComponent = (props) => {
   const navigate = useNavigate();
-  let account = localStorage.getItem("userAddress");
 
   const {
+    acounttt,
     onOpen,
     fileId,
     fileName,
@@ -61,14 +61,13 @@ const CardComponent = (props) => {
     navigate("/filesforsale");
   };
 
-  const handleShareModal = () => {
-    if (fileOwner !== account) {
-      console.log({ account }, { fileOwner });
-      toast.error("You can't share others file");
-      return;
-    }
-    onOpen();
-  };
+  // const handleShareModal = () => {
+  //   if (fileOwner !== acounttt) {
+  //     toast.error("You can't share others file");
+  //     return;
+  //   }
+  //   onOpen();
+  // };
 
   return (
     <Card>
@@ -83,8 +82,8 @@ const CardComponent = (props) => {
           File id # {fileId}
         </Heading>
         <Tooltip label="Share File" placement="auto">
-          <Button onClick={handleShareModal}>
-            {/* <Button onClick={onOpen}> */}
+          {/* <Button onClick={handleShareModal}> */}
+          <Button onClick={onOpen}>
             <Icon as={BsFillShareFill} boxSize={6} />
           </Button>
         </Tooltip>
@@ -110,7 +109,7 @@ const CardComponent = (props) => {
             {" "}
             Owner:{" "}
           </Text>
-          {fileOwner === account
+          {fileOwner === acounttt
             ? "YOU"
             : `${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`}
         </Text>
