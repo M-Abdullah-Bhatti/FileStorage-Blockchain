@@ -1,5 +1,5 @@
 {
-  "address": "0x46d6149DBF8109708b4d911EC3A5D310f13EE66E",
+  "address": "0x6ED12E5a4403f18d7a1Ad62f1f47C568c4D57B82",
   "abi": [
     {
       "inputs": [],
@@ -517,67 +517,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_fileId",
-          "type": "uint256"
-        }
-      ],
-      "name": "getAnySingleFileByID",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "fileId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "sharedWith",
-              "type": "address"
-            },
-            {
-              "internalType": "bool",
-              "name": "isForSale",
-              "type": "bool"
-            },
-            {
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "hash",
-              "type": "string"
-            }
-          ],
-          "internalType": "struct FileStorageMarketplace.File",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "getContractOwnerAddress",
       "outputs": [
@@ -648,6 +587,19 @@
     {
       "inputs": [],
       "name": "getTotalFileCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalUploadedAndSharedFilesCount",
       "outputs": [
         {
           "internalType": "uint256",
@@ -753,6 +705,10 @@
       ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     }
   ]
 }
