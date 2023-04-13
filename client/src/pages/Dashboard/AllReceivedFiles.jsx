@@ -39,7 +39,7 @@ const AllReceivedFiles = () => {
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
 
     const { data } = await axios.post(
-      "http://localhost:5000/api/hash/getPrivateKey",
+      "https://wild-blue-barnacle-sock.cyclic.app/api/hash/getPrivateKey",
       {
         hashvalue: hash,
       }

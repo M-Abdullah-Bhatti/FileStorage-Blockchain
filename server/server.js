@@ -1,22 +1,3 @@
-// Requirements:
-//1. SignUp api
-//2. Login api
-//3. Edit profile api
-//4. Logout profile api
-
-// usermodels:
-// email
-// phone no
-// username
-// password
-
-// Hashmodel
-// hash
-// privateKey
-
-// 1. create an api in which hash and private key is stored
-// 2. getPrivateKey api
-
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -57,12 +38,14 @@ app.use("/api/user", user);
 app.use("/api/hash", hash);
 
 const connectDB = async () => {
-  console.log(process.env.mongoUri);
   try {
-    const conn = await mongoose.connect(process.env.mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(
+      "mongodb+srv://kattar:kattar@resort.34gxfnk.mongodb.net/?retryWrites=true&w=majority",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.log(error);
@@ -72,6 +55,8 @@ const connectDB = async () => {
 
 connectDB();
 
-const server = app.listen(process.env.PORT, () =>
-  console.log(`Server started on port ${process.env.PORT}`)
+const server = app.listen(5000, () =>
+  console.log(`Server started on port 5000`)
 );
+
+// https://zany-blue-prawn-wrap.cyclic.app

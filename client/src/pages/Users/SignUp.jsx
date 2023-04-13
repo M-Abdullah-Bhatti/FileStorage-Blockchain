@@ -30,7 +30,7 @@ export default function Signup() {
   const handleSignupSubmit = async () => {
     try {
       await axios
-        .post("http://localhost:5000/api/user/signup", {
+        .post("https://wild-blue-barnacle-sock.cyclic.app/api/user/signup", {
           username,
           email,
           password,

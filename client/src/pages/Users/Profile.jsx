@@ -31,7 +31,7 @@ export default function Profile() {
 
     try {
       await axios
-        .put("http://localhost:5000/api/user/profile", {
+        .put("https://wild-blue-barnacle-sock.cyclic.app/api/user/profile", {
           username,
           newEmail,
           prevEmail,
@@ -57,7 +57,7 @@ export default function Profile() {
       let prevEmail = localStorage.getItem("email");
       // console.log(parEmail);
       const { data } = await axios.get(
-        `http://localhost:5000/api/user/profile/${prevEmail}`
+        `https://wild-blue-barnacle-sock.cyclic.app/api/user/profile/${prevEmail}`
       );
       //   console.log(data);
 

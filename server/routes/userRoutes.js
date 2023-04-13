@@ -7,8 +7,6 @@ const {
   logoutUser,
 } = require("../controllers/userController");
 
-const { isAuthenticatedUser } = require("../middleware/auth");
-
 const router = express.Router();
 router.route("/signup").post(registerUser);
 router.route("/login").post(loginUser);

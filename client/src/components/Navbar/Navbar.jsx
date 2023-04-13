@@ -41,7 +41,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
   const handleLogoutSubmit = async () => {
     try {
       await axios
-        .get("http://localhost:5000/api/user/logout")
+        .get("https://wild-blue-barnacle-sock.cyclic.app/api/user/logout")
         .then(() => {
           handleLogout();
         })

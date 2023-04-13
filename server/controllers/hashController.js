@@ -13,7 +13,6 @@ exports.getPrivateKey = catchAsyncErrors(async (req, res, next) => {
       message: "This hash can't be found",
     });
   }
-  // console.log("hashpk: ", hash?.privatekey);
 
   res.status(200).json({
     sucess: true,
@@ -29,5 +28,3 @@ exports.createHash = catchAsyncErrors(async (req, res, next) => {
     hash,
   });
 });
-
-// "address": "0xbd7e9Eb33F6f289754C9ad9586286452e7558c22",

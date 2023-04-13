@@ -24,7 +24,7 @@ export default function Login({ handleLogin }) {
   const handleLoginSubmit = async () => {
     try {
       await axios
-        .post("http://localhost:5000/api/user/login", {
+        .post("https://wild-blue-barnacle-sock.cyclic.app/api/user/login", {
           email,
           password,
         })
