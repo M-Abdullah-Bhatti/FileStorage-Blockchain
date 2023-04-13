@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { ethers } from "ethers";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
 
@@ -22,7 +22,10 @@ import { toast } from "react-toastify";
 
 const CardComponent = (props) => {
   const navigate = useNavigate();
-  // console.log("Props.dataaaaaaaaaaa" + props.data.fileId);
+  const [account, setAccount] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
+
   const {
     onOpen,
     fileId,
@@ -33,33 +36,38 @@ const CardComponent = (props) => {
     filePrice,
   } = props;
 
-  // useEffect(() => {
-  //   console.log("---", fileId);
-  // }, []);
-  const { ethereum } = window;
-
   const handleBuy = async (fileId, filePrice) => {
-    console.log(fileId);
-    console.log(filePrice);
-
-    // if (!ethereum) return alert("Please install Metamask");
+    const { ethereum } = window;
+    if (!ethereum) return alert("Please install Metamask");
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(provider);
+
     const signer = provider.getSigner();
+
     const contract = new ethers.Contract(
       FileStorageMarketplace.address,
       FileStorageMarketplace.abi,
       signer
     );
+    setContract(contract);
+
+    // window.ethereum.on("accountsChanged", async () => {
+    //   const accounts = await window.ethereum.request({
+    //     method: "eth_requestAccounts",
+    //   });
+    //   const account = ethers.utils.getAddress(accounts[0]);
+    //   setAccount(account);
+    // });
 
     filePrice = ethers.utils.parseEther(filePrice);
     const walletAddress = await signer.getAddress();
-    console.log({ filePrice, signer, walletAddress });
 
     const tx = await contract.buyFile(fileId, {
       from: walletAddress,
       value: filePrice._hex,
     });
+
     await tx.wait();
     toast.success("File Purchased Successfully");
     navigate("/");

@@ -24,14 +24,12 @@ import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 
 const AllUnsharedFiles = () => {
+  const [account, setAccount] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [currentPage, setCurrentPage] = useState(1);
-
+  const [loading, setLoading] = useState(true);
   const [unSharedFiles, setUnSharedFiles] = useState([]);
 
-  const [loading, setLoading] = useState(true);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -66,6 +64,14 @@ const AllUnsharedFiles = () => {
         signer
       );
 
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = ethers.utils.getAddress(accounts[0]);
+        setAccount(account);
+      });
+
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyUnSharedFiles();
 
@@ -78,7 +84,7 @@ const AllUnsharedFiles = () => {
     };
 
     fetchAllMyUnSharedFiles();
-  }, []);
+  }, [account]);
 
   return (
     <>

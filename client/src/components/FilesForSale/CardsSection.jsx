@@ -24,7 +24,9 @@ export default function CardsSection({ isHomePage }) {
   useEffect(() => {
     const fetchGetFilesForSale = async () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
@@ -35,12 +37,9 @@ export default function CardsSection({ isHomePage }) {
 
       // Set the files state variable
       setSharedFiles(sharedFiles);
-
-      console.log("sharedFiles: ", sharedFiles);
     };
 
     fetchGetFilesForSale();
-    // console.log("Currentee " + currentItems);
   }, []);
 
   return (

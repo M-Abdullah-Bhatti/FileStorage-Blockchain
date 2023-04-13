@@ -24,6 +24,8 @@ import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 
 const AllSharedFiles = () => {
+  const [account, setAccount] = useState(null);
+
   const [sharedFiles, setSharedFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,26 +56,33 @@ const AllSharedFiles = () => {
 
   useEffect(() => {
     const fetchAllMySharedFiles = async () => {
-      // Connect to the contract using ethers.js
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
         signer
       );
 
-      // Call the getAllMyUploadedFiles() function and retrieve the files
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = ethers.utils.getAddress(accounts[0]);
+        setAccount(account);
+      });
+
       const files = await contract.getAllMySharedFiles();
 
-      console.log("sharedFiles: ", files);
       // Set the files state variable
       setSharedFiles(files);
       setLoading(false);
     };
 
     fetchAllMySharedFiles();
-  }, []);
+  }, [account]);
 
   return (
     <>

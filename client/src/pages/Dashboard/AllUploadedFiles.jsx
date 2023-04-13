@@ -23,8 +23,12 @@ import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 
 const AllUploadedFiles = () => {
+  const [account, setAccount] = useState(null);
+
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -34,10 +38,8 @@ const AllUploadedFiles = () => {
 
   const [hash, setHash] = useState("");
   const [fileContent, setFileContent] = useState("");
-  const [loading, setLoading] = useState(true);
 
   const click = async (hash) => {
-    console.log("click");
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
 
     const { data } = await axios.post(
@@ -56,12 +58,22 @@ const AllUploadedFiles = () => {
     const fetchAllMyUploadedFiles = async () => {
       // Connect to the contract using ethers.js
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
         signer
       );
+
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = ethers.utils.getAddress(accounts[0]);
+        setAccount(account);
+      });
 
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyUploadedFiles();
@@ -69,13 +81,10 @@ const AllUploadedFiles = () => {
       // Set the files state variable
       setFiles(files);
       setLoading(false);
-
-      console.log("files:============================== ");
-      console.log("files: ", files);
     };
 
     fetchAllMyUploadedFiles();
-  }, []);
+  }, [account]);
 
   return (
     <>

@@ -22,8 +22,10 @@ import axios from "axios";
 import Loader from "../../components/Loader/Loader";
 
 const AllReceivedFiles = () => {
-  const [recievedFiles, setRecievedFiles] = useState([]);
+  const [account, setAccount] = useState(null);
+
   const [loading, setLoading] = useState(true);
+  const [recievedFiles, setRecievedFiles] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -60,6 +62,14 @@ const AllReceivedFiles = () => {
         signer
       );
 
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = ethers.utils.getAddress(accounts[0]);
+        setAccount(account);
+      });
+
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyReceivedFiles();
 
@@ -70,7 +80,7 @@ const AllReceivedFiles = () => {
     };
 
     fetchAllMySharedFiles();
-  }, []);
+  }, [account]);
 
   return (
     <>
@@ -132,17 +142,17 @@ const AllReceivedFiles = () => {
                           onClick={() => click(data.hash)}
                           isExternal
                         >
-                          {data.hash.slice(0, 20) +
+                          {data.hash.slice(0, 30) +
                             "..." +
-                            data.hash.slice(-20)}{" "}
+                            data.hash.slice(-10)}{" "}
                           <ExternalLinkIcon mx="2px" />
                         </Link>
                       </Td>
 
                       <Td>{`${data?.owner?.slice(
                         0,
-                        16
-                      )}....${data?.owner?.slice(-8)}`}</Td>
+                        20
+                      )}....${data?.owner?.slice(-10)}`}</Td>
                     </Tr>
                   ))
                 )}
