@@ -8,18 +8,18 @@ import Pagination from "../Pagination/Pagination";
 import CardComponent from "./CardComponent";
 
 export default function CardsSection({ isHomePage }) {
-  const [sharedFiles, setSharedFiles] = useState([]);
+  const [account, setAccount] = useState(null);
+
+  const [filesForSale, setFilesForSale] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sharedFiles.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filesForSale.slice(indexOfFirstItem, indexOfLastItem);
 
-  // console.log({ itemsPerPage }, { indexOfLastItem }, { currentItems });
-
-  const showPagination = sharedFiles.length > itemsPerPage ? true : false;
+  const showPagination = filesForSale.length > itemsPerPage ? true : false;
 
   useEffect(() => {
     const fetchGetFilesForSale = async () => {
@@ -33,18 +33,29 @@ export default function CardsSection({ isHomePage }) {
         signer
       );
 
-      const sharedFiles = await contract.getFilesForSale();
+      window.ethereum.on("accountsChanged", async () => {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = ethers.utils.getAddress(accounts[0]);
+        setAccount(account);
+        localStorage.setItem("userAddress", account);
+        console.log("jjjjjjjjjjjjjjjj");
+        console.log({ account });
+      });
+
+      const filesForSale = await contract.getFilesForSale();
 
       // Set the files state variable
-      setSharedFiles(sharedFiles);
+      setFilesForSale(filesForSale);
     };
 
     fetchGetFilesForSale();
-  }, []);
+  }, [account]);
 
   return (
     <>
-      {sharedFiles.length === 0 ? (
+      {filesForSale.length === 0 ? (
         <Box
           minHeight={"60vh"}
           display={"flex"}
@@ -65,7 +76,7 @@ export default function CardsSection({ isHomePage }) {
           >
             {isHomePage
               ? currentItems.slice(0, 3).map((data, i) => (
-                  <>
+                  <Box key={i}>
                     <ShareFileModal
                       isOpen={isOpen}
                       onOpen={onOpen}
@@ -83,10 +94,10 @@ export default function CardsSection({ isHomePage }) {
                         .toString()}
                       onOpen={onOpen}
                     />
-                  </>
+                  </Box>
                 ))
               : currentItems.map((data, i) => (
-                  <>
+                  <Box key={i}>
                     <ShareFileModal
                       isOpen={isOpen}
                       onOpen={onOpen}
@@ -104,14 +115,14 @@ export default function CardsSection({ isHomePage }) {
                         .toString()}
                       onOpen={onOpen}
                     />
-                  </>
+                  </Box>
                 ))}
           </SimpleGrid>
 
           {!isHomePage && showPagination && (
             <Pagination
               itemsPerPage={itemsPerPage}
-              totalItems={sharedFiles.length}
+              totalItems={filesForSale.length}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />

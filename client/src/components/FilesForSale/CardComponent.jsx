@@ -22,9 +22,7 @@ import { toast } from "react-toastify";
 
 const CardComponent = (props) => {
   const navigate = useNavigate();
-  const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [contract, setContract] = useState(null);
+  let account = localStorage.getItem("userAddress");
 
   const {
     onOpen,
@@ -41,7 +39,6 @@ const CardComponent = (props) => {
     if (!ethereum) return alert("Please install Metamask");
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    setProvider(provider);
 
     const signer = provider.getSigner();
 
@@ -50,15 +47,6 @@ const CardComponent = (props) => {
       FileStorageMarketplace.abi,
       signer
     );
-    setContract(contract);
-
-    // window.ethereum.on("accountsChanged", async () => {
-    //   const accounts = await window.ethereum.request({
-    //     method: "eth_requestAccounts",
-    //   });
-    //   const account = ethers.utils.getAddress(accounts[0]);
-    //   setAccount(account);
-    // });
 
     filePrice = ethers.utils.parseEther(filePrice);
     const walletAddress = await signer.getAddress();
@@ -70,7 +58,16 @@ const CardComponent = (props) => {
 
     await tx.wait();
     toast.success("File Purchased Successfully");
-    navigate("/");
+    navigate("/filesforsale");
+  };
+
+  const handleShareModal = () => {
+    if (fileOwner !== account) {
+      console.log({ account }, { fileOwner });
+      toast.error("You can't share others file");
+      return;
+    }
+    onOpen();
   };
 
   return (
@@ -86,7 +83,8 @@ const CardComponent = (props) => {
           File id # {fileId}
         </Heading>
         <Tooltip label="Share File" placement="auto">
-          <Button onClick={onOpen}>
+          <Button onClick={handleShareModal}>
+            {/* <Button onClick={onOpen}> */}
             <Icon as={BsFillShareFill} boxSize={6} />
           </Button>
         </Tooltip>
@@ -112,8 +110,9 @@ const CardComponent = (props) => {
             {" "}
             Owner:{" "}
           </Text>
-
-          {`${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`}
+          {fileOwner === account
+            ? "YOU"
+            : `${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`}
         </Text>
 
         <Text
