@@ -1,5 +1,5 @@
 {
-  "address": "0x628f55C01fDb444737fB46C7eB6735D463506334",
+  "address": "0xAD670Cf535DB853E53D639EF475F35Fd6f350e64",
   "abi": [
     {
       "inputs": [],
@@ -587,19 +587,6 @@
     {
       "inputs": [],
       "name": "getTotalFileCount",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getTotalUploadedAndSharedFilesCount",
       "outputs": [
         {
           "internalType": "uint256",
