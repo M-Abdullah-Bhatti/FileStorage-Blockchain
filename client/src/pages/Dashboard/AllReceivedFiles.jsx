@@ -80,7 +80,7 @@ const AllReceivedFiles = () => {
     };
 
     fetchAllMySharedFiles();
-  }, [account]);
+  }, [account, recievedFiles]);
 
   return (
     <>

@@ -75,8 +75,6 @@ const AllUnsharedFiles = () => {
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyUnSharedFiles();
 
-      console.log("unSharedFiles: ", files);
-
       // Set the files state variable
       setUnSharedFiles(files);
 
@@ -84,7 +82,7 @@ const AllUnsharedFiles = () => {
     };
 
     fetchAllMyUnSharedFiles();
-  }, [account]);
+  }, [unSharedFiles, account]);
 
   return (
     <>
@@ -159,10 +157,7 @@ const AllUnsharedFiles = () => {
                             <ExternalLinkIcon mx="2px" />
                           </Link>
                         </Td>
-                        {/* <Td>{`${data?.sharedWith?.slice(
-                    0,
-                    16
-                  )}....${data?.sharedWith?.slice(-8)}`}</Td> */}
+
                         <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
                         <Td>
                           <Button
