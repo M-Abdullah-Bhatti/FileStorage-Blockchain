@@ -26,6 +26,10 @@ const AllUploadedFiles = () => {
   const [account, setAccount] = useState(null);
 
   const [files, setFiles] = useState([]);
+  const [
+    totalFilesCountSharedAndUploaded,
+    setTotalFilesCountSharedAndUploaded,
+  ] = useState(0);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -35,6 +39,12 @@ const AllUploadedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
+  console.log(
+    { itemsPerPage },
+    { indexOfFirstItem },
+    { indexOfLastItem },
+    { currentItems }
+  );
 
   const [hash, setHash] = useState("");
   const [fileContent, setFileContent] = useState("");
@@ -77,6 +87,14 @@ const AllUploadedFiles = () => {
 
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyUploadedFiles();
+      const filesCountUploadedFiles = files.length;
+
+      const SharedFiles = await contract.getAllMySharedFiles();
+      const filesCountSharedFiles = SharedFiles.length;
+
+      const totalFilesCountSharedAndUploaded =
+        Number(filesCountUploadedFiles) + Number(filesCountSharedFiles);
+      setTotalFilesCountSharedAndUploaded(totalFilesCountSharedAndUploaded);
 
       // Set the files state variable
       setFiles(files);
@@ -84,7 +102,7 @@ const AllUploadedFiles = () => {
     };
 
     fetchAllMyUploadedFiles();
-  }, [account]);
+  }, [account, totalFilesCountSharedAndUploaded]);
 
   return (
     <>
@@ -95,11 +113,18 @@ const AllUploadedFiles = () => {
           <Text
             mb={"2"}
             fontSize="5xl"
-            textAlign="center"
+            // textAlign="center"
+            display={"flex"}
+            justifyContent={"flex-start"}
+            alignItems={"center"}
+            gap={"6em"}
             textTransform="uppercase"
             textColor="#0d8775"
             fontFamily="auto"
           >
+            <Text fontSize="3xl" textTransform={"capitalize"}>
+              Total Files: {totalFilesCountSharedAndUploaded}
+            </Text>
             Dashboard
           </Text>
 

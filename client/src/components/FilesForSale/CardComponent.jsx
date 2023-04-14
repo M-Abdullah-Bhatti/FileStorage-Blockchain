@@ -14,17 +14,17 @@ import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import { useAddress } from "@thirdweb-dev/react";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
-
 import { useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
 
 const CardComponent = (props) => {
   const navigate = useNavigate();
+  const account = useAddress();
+  console.log({ account });
 
   const {
-    acounttt,
     onOpen,
     fileId,
     fileName,
@@ -35,8 +35,10 @@ const CardComponent = (props) => {
   } = props;
 
   const handleBuy = async (fileId, filePrice) => {
-    const { ethereum } = window;
-    if (!ethereum) return alert("Please install Metamask");
+    if (fileOwner === account) {
+      toast.error("You can't buy your own file");
+      return;
+    }
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -61,13 +63,13 @@ const CardComponent = (props) => {
     navigate("/filesforsale");
   };
 
-  // const handleShareModal = () => {
-  //   if (fileOwner !== acounttt) {
-  //     toast.error("You can't share others file");
-  //     return;
-  //   }
-  //   onOpen();
-  // };
+  const handleShareModal = () => {
+    if (fileOwner !== account) {
+      toast.error("You can't share others file");
+      return;
+    }
+    onOpen();
+  };
 
   return (
     <Card>
@@ -82,21 +84,27 @@ const CardComponent = (props) => {
           File id # {fileId}
         </Heading>
         <Tooltip label="Share File" placement="auto">
-          {/* <Button onClick={handleShareModal}> */}
-          <Button onClick={onOpen}>
+          <Button onClick={handleShareModal}>
+            {/* <Button onClick={onOpen}> */}
             <Icon as={BsFillShareFill} boxSize={6} />
           </Button>
         </Tooltip>
       </CardHeader>
       <CardBody>
-        <Text textAlign="left" marginBottom="0.5em">
+        <Text textAlign="left" marginBottom="0.5em" fontFamily="auto">
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Name:{" "}
           </Text>
           {fileName}
         </Text>
-        <Text fontFamily="auto" textAlign="left" marginBottom="0.5em">
+        <Text
+          fontFamily="auto"
+          textAlign="left"
+          marginBottom="0.5em"
+          overflowY={"auto"}
+          height={"100px"}
+        >
           <Text fontWeight="bold" fontSize="lg" display="inline">
             {" "}
             Description:{" "}
@@ -109,7 +117,7 @@ const CardComponent = (props) => {
             {" "}
             Owner:{" "}
           </Text>
-          {fileOwner === acounttt
+          {fileOwner === account
             ? "YOU"
             : `${fileOwner.slice(0, 16)}....${fileOwner.slice(-4)}`}
         </Text>
@@ -129,7 +137,7 @@ const CardComponent = (props) => {
             href={`https://gateway.pinata.cloud/ipfs/${fileHash}`}
             isExternal
           >
-            {fileHash.slice(0, 15) + "..." + fileHash.slice(-10)}{" "}
+            {fileHash.slice(0, 15) + "..." + fileHash.slice(-5)}{" "}
             <ExternalLinkIcon mx="2px" />
           </Link>
         </Text>

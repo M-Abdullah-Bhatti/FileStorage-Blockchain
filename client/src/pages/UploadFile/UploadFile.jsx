@@ -10,7 +10,7 @@ import {
   Textarea,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ethers } from "ethers";
 import { create } from "ipfs-http-client";
 import JSEncrypt from "jsencrypt";
@@ -29,9 +29,6 @@ const auth =
   "Basic " +
   fromByteArray(new TextEncoder().encode(`${projectId}:${projectSecret}`));
 
-// const auth =
-//   "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
-
 const ipfs = create({
   host: "ipfs.infura.io",
   port: 5001,
@@ -40,11 +37,6 @@ const ipfs = create({
     authorization: auth,
   },
 });
-
-// const getOriginalHash = async (hash) => {
-// let encryptor = new JSEncrypt({ default_key_size: 2048 });
-
-//   console.log("============");
 
 export default function UploadFile() {
   const navigate = useNavigate();
@@ -103,36 +95,13 @@ export default function UploadFile() {
           privatekey: privatekey,
         })
         .then((res) => {
-          console.log(res);
-
           toast.success("File Uploaded Successfully");
-          navigate("/");
+          navigate("/myalluploadedfiles");
         });
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  // const handle = async () => {
-  //   // First get both public and private Keys
-  //   console.log("---- ", encryptor.getKey());
-  //   publicKey = encryptor.getPublicKey();
-  //   privateKey = encryptor.getPrivateKey();
-
-  //   console.log("publicKey ", publicKey);
-  //   console.log("privateKey ", privateKey);
-  //   // localStorage.setItem("privateKey", privateKey);
-
-  //   // console.log("sdaasd");
-  //   // get encrypted hash which need to be stored in blockchain
-  //   encryptor.setPublicKey(publicKey);
-  //   encrypted = encryptor.encrypt(ipfsHash);
-  //   console.log(encrypted);
-
-  //   // store this encrypted hash in blockchain:
-
-  //   // store encrypted hash and privateKey in mongodb via api
-  // };
 
   return (
     <Flex

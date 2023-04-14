@@ -38,7 +38,7 @@ export default function CardsSection({ isHomePage }) {
     };
 
     fetchGetFilesForSale();
-  }, []);
+  }, [filesForSale]);
 
   return (
     <>
@@ -92,6 +92,7 @@ export default function CardsSection({ isHomePage }) {
                       fileId={data.fileId}
                     />
                     <CardComponent
+                      // account={account}
                       fileId={Number(data.fileId)}
                       fileName={data.name}
                       fileDescription={data.description}
