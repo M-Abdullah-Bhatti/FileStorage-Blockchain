@@ -36,6 +36,15 @@ const AllUnsharedFiles = () => {
   const currentItems = unSharedFiles.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = unSharedFiles.length > itemsPerPage ? true : false;
 
+  const [fileId, setFileId] = useState(false);
+
+  const handleClick = async (fileId) => {
+    console.log(Number(fileId));
+    // openModal();
+    setFileId(fileId);
+    onOpen();
+  };
+
   const click = async (hash) => {
     console.log("click");
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
@@ -161,7 +170,7 @@ const AllUnsharedFiles = () => {
                         <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
                         <Td>
                           <Button
-                            onClick={onOpen}
+                            onClick={() => handleClick(data.fileId)}
                             colorScheme="red"
                             size="lg"
                             _hover={{

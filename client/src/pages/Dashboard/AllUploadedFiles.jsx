@@ -48,6 +48,14 @@ const AllUploadedFiles = () => {
 
   const [hash, setHash] = useState("");
   const [fileContent, setFileContent] = useState("");
+  const [fileId, setFileId] = useState(false);
+
+  const handleClick = async (fileId) => {
+    console.log(Number(fileId));
+    // openModal();
+    setFileId(fileId);
+    onOpen();
+  };
 
   const click = async (hash) => {
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
@@ -167,7 +175,7 @@ const AllUploadedFiles = () => {
                         isOpen={isOpen}
                         onOpen={onOpen}
                         onClose={onClose}
-                        fileId={data.fileId}
+                        fileId={fileId}
                       />
 
                       <Tr key={i}>
@@ -189,7 +197,8 @@ const AllUploadedFiles = () => {
                         <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
                         <Td>
                           <Button
-                            onClick={onOpen}
+                            // onClick={onOpen}
+                            onClick={() => handleClick(data.fileId)}
                             colorScheme="teal"
                             backgroundColor="black"
                             size="lg"

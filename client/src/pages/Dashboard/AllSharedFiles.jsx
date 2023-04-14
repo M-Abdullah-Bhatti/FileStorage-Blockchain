@@ -37,6 +37,15 @@ const AllSharedFiles = () => {
   const showPagination = sharedFiles.length > itemsPerPage ? true : false;
   const [loading, setLoading] = useState(true);
 
+  const [fileId, setFileId] = useState(false);
+
+  const handleClick = async (fileId) => {
+    console.log(Number(fileId));
+    // openModal();
+    setFileId(fileId);
+    onOpen();
+  };
+
   const click = async (hash) => {
     console.log("click");
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
@@ -164,7 +173,7 @@ const AllSharedFiles = () => {
                         )}....${data?.sharedWith?.slice(-8)}`}</Td>
                         <Td>
                           <Button
-                            onClick={onOpen}
+                            onClick={() => handleClick(data.fileId)}
                             colorScheme="teal"
                             backgroundColor="black"
                             size="lg"
