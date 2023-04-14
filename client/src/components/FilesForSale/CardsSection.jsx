@@ -18,7 +18,8 @@ export default function CardsSection({ isHomePage }) {
   const currentItems = filesForSale.slice(indexOfFirstItem, indexOfLastItem);
 
   const showPagination = filesForSale.length > itemsPerPage ? true : false;
-
+  let fileId;
+  fileId = localStorage.getItem("fileId");
   useEffect(() => {
     const fetchGetFilesForSale = async () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -68,7 +69,7 @@ export default function CardsSection({ isHomePage }) {
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
-                      fileId={data.fileId}
+                      fileId={fileId}
                     />
                     <CardComponent
                       fileId={Number(data.fileId)}
@@ -89,7 +90,7 @@ export default function CardsSection({ isHomePage }) {
                       isOpen={isOpen}
                       onOpen={onOpen}
                       onClose={onClose}
-                      fileId={data.fileId}
+                      fileId={fileId}
                     />
                     <CardComponent
                       // account={account}

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { BsFillShareFill } from "react-icons/bs";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useAddress } from "@thirdweb-dev/react";
 import FileStorageMarketplace from "../../FileStorageMarketplace.json";
@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 const CardComponent = (props) => {
   const navigate = useNavigate();
   const account = useAddress();
-  console.log({ account });
+  // console.log({ account });
 
   const {
     onOpen,
@@ -63,12 +63,14 @@ const CardComponent = (props) => {
     navigate("/filesforsale");
   };
 
-  const handleShareModal = () => {
+  const handleShareModal = async (fileId) => {
     if (fileOwner !== account) {
       toast.error("You can't share others file");
       return;
     }
     onOpen();
+    // console.log("fileId: ", fileId);
+    localStorage.setItem("fileId", fileId);
   };
 
   return (
@@ -84,7 +86,7 @@ const CardComponent = (props) => {
           File id # {fileId}
         </Heading>
         <Tooltip label="Share File" placement="auto">
-          <Button onClick={handleShareModal}>
+          <Button onClick={() => handleShareModal(fileId)}>
             {/* <Button onClick={onOpen}> */}
             <Icon as={BsFillShareFill} boxSize={6} />
           </Button>

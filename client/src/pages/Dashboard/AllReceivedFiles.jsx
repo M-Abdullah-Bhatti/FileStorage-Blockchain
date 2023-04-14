@@ -73,7 +73,7 @@ const AllReceivedFiles = () => {
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyReceivedFiles();
 
-      console.log("recieved files: ", files);
+      // console.log("recieved files: ", files);
       // Set the files state variable
       setRecievedFiles(files);
       setLoading(false);

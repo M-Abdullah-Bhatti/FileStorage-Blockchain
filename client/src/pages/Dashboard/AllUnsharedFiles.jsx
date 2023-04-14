@@ -39,8 +39,8 @@ const AllUnsharedFiles = () => {
   const [fileId, setFileId] = useState(false);
 
   const handleClick = async (fileId) => {
-    console.log(Number(fileId));
-    // openModal();
+    // console.log(Number(fileId));
+    // // openModal();
     setFileId(fileId);
     onOpen();
   };
@@ -149,7 +149,7 @@ const AllUnsharedFiles = () => {
                         isOpen={isOpen}
                         onOpen={onOpen}
                         onClose={onClose}
-                        fileId={data.fileId}
+                        fileId={fileId}
                       />
                       <Tr key={i}>
                         <Td>{data.name}</Td>

@@ -24,15 +24,14 @@ export default function DeleteFileModal(props) {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
+      console.log("signer: ", signer);
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
         signer
       );
-
       const tx = await contract.deleteFile(fileId);
       onClose();
-
       await tx.wait();
       toast.success("File Deleted Successfully");
       setTimeout(() => {
