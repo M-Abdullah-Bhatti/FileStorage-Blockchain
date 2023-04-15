@@ -80,10 +80,16 @@ export default function Profile() {
       fontFamily={"sans-serif"}
       bg="#f2fffe"
     >
-      <Stack spacing={8} mx={"auto"} minW={"lg"} py={10} px={6}>
+      <Stack
+        spacing={8}
+        mx={"auto"}
+        minW={{ base: "sm", md: "lg" }}
+        py={10}
+        px={6}
+      >
         <Stack align={"center"}>
           <Heading
-            fontSize={"5xl"}
+            fontSize={{ base: "4xl", md: "5xl" }}
             fontWeight="semi-bold"
             textAlign={"center"}
             fontFamily={"auto"}

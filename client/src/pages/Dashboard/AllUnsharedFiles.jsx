@@ -98,10 +98,14 @@ const AllUnsharedFiles = () => {
       {loading ? (
         <Loader />
       ) : (
-        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+        <Box
+          paddingY="10"
+          paddingX={{ base: "0.5em", md: "4em" }}
+          minHeight={"90vh"}
+        >
           <Text
             mb={"2"}
-            fontSize="5xl"
+            fontSize={{ base: "3xl", md: "5xl" }}
             textAlign="center"
             textTransform="uppercase"
             textColor="#0d8775"
@@ -112,13 +116,13 @@ const AllUnsharedFiles = () => {
 
           <Text
             mb={"5"}
-            fontSize="3xl"
+            fontSize={{ base: "2xl", md: "3xl" }}
             textAlign="center"
             textTransform="uppercase"
             textColor="#0d8775"
             fontFamily="auto"
           >
-            All My Uploaded Files
+            All My Unshared Files
           </Text>
 
           {/* Tables */}

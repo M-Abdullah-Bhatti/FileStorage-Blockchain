@@ -6,7 +6,7 @@ const FilesForSale = () => {
   return (
     <Box backgroundColor="#f2fffe" paddingTop="3em">
       <Text
-        fontSize="5xl"
+        fontSize={{ base: "4xl", md: "5xl" }}
         textAlign="center"
         textTransform="uppercase"
         textColor="#0d8775"

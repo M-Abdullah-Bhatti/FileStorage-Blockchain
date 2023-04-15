@@ -117,20 +117,26 @@ const AllUploadedFiles = () => {
       {loading ? (
         <Loader />
       ) : (
-        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+        <Box
+          paddingY="10"
+          paddingX={{ base: "0.5em", md: "4em" }}
+          minHeight={"90vh"}
+        >
           <Text
             mb={"2"}
-            fontSize="5xl"
-            // textAlign="center"
+            fontSize={{ base: "3xl", md: "5xl" }}
             display={"flex"}
             justifyContent={"flex-start"}
             alignItems={"center"}
-            gap={"6em"}
+            gap={{ base: "0.5em", md: "6em" }}
             textTransform="uppercase"
             textColor="#0d8775"
             fontFamily="auto"
           >
-            <Text fontSize="3xl" textTransform={"capitalize"}>
+            <Text
+              fontSize={{ base: "sm", md: "3xl" }}
+              textTransform={"capitalize"}
+            >
               Total Files: {totalFilesCountSharedAndUploaded}
             </Text>
             Dashboard
@@ -138,7 +144,7 @@ const AllUploadedFiles = () => {
 
           <Text
             mb={"5"}
-            fontSize="3xl"
+            fontSize={{ base: "2xl", md: "3xl" }}
             textAlign="center"
             textTransform="uppercase"
             textColor="#0d8775"

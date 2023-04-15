@@ -8,14 +8,13 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
   createIcon,
   useColorModeValue,
 } from "@chakra-ui/react";
 
 export default function Hero() {
   return (
-    <Container minW={"100%"} paddingX={"5em"}>
+    <Container minW={"100%"} paddingX={{ base: "1em", md: "5em" }}>
       <Stack
         align={"center"}
         spacing={{ base: 8, md: 10 }}
@@ -26,7 +25,7 @@ export default function Hero() {
           <Heading
             lineHeight={1.1}
             fontWeight={600}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+            fontSize={{ base: "4xl", sm: "4xl", lg: "6xl" }}
           >
             <Text
               as={"span"}

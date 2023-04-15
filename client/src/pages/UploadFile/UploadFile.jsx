@@ -114,14 +114,21 @@ export default function UploadFile() {
       bg="#f2fffe"
     >
       <Text
-        fontSize="5xl"
+        fontSize={{ base: "4xl", md: "5xl" }}
         textColor="#0d8775"
         textAlign="center"
         textTransform="uppercase"
       >
         Upload your File
       </Text>
-      <Stack spacing={8} mx={"auto"} minW={"md"} pt={3} pb={10} px={6}>
+      <Stack
+        spacing={{ base: 1, md: 8 }}
+        mx={"auto"}
+        minW={{ base: "xs", md: "md" }}
+        pt={3}
+        pb={10}
+        px={{ base: 1, md: 6 }}
+      >
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}

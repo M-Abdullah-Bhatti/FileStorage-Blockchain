@@ -59,7 +59,7 @@ export default function CardsSection({ isHomePage }) {
             templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
             paddingTop={12}
             paddingBottom={5}
-            paddingX="10em"
+            paddingX={{ base: "1em", md: "10em" }}
             backgroundColor="#f2fffe"
           >
             {isHomePage

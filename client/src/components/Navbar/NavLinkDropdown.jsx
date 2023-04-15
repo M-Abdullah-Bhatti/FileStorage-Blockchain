@@ -7,7 +7,7 @@ export default function NavLinkDropdown() {
     <Menu>
       <MenuButton
         bg="transparent"
-        fontSize="xl"
+        fontSize={{ base: "md", md: "xl" }}
         fontWeight="100"
         as={Button}
         rightIcon={<ChevronDownIcon />}

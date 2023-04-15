@@ -16,7 +16,7 @@ const Home = () => {
         paddingBottom={10}
       >
         <Text
-          fontSize="5xl"
+          fontSize={{ base: "4xl", md: "5xl" }}
           textAlign="center"
           textTransform="uppercase"
           textColor="#0d8775"
@@ -30,7 +30,7 @@ const Home = () => {
           backgroundColor="black"
           fontSize={"lg"}
           textColor="white"
-          width="13%"
+          width={{ base: "50%", md: "13%" }}
           textAlign={"center"}
           paddingY="1.4em"
           _hover={{

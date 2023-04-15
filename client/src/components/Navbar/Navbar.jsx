@@ -55,7 +55,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
 
   return (
     <>
-      <Box bg="#fdfdfd" px={"5em"} boxShadow="sm">
+      <Box bg="#fdfdfd" px={{ base: "0.5em", md: "5em" }} boxShadow="sm">
         <Flex
           h={20}
           alignItems={"center"}
@@ -70,11 +70,11 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack spacing={8} alignItems={"center"}>
+          <HStack spacing={{ base: 1, md: 8 }} alignItems={"center"}>
             <Box
               fontWeight="bold"
-              fontSize={{ base: "sm", md: "3xl" }}
-              marginRight="1em"
+              fontSize={{ base: "lg", md: "3xl" }}
+              marginRight={{ base: "0em", md: "1em" }}
             >
               <Link to="/">DFS System </Link>
             </Box>
@@ -97,6 +97,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
                 <ConnectWallet
                   accentColor="#f213a4"
                   colorMode="dark"
+                  width={{ base: "150px", md: "unset" }}
                   style={{ background: "black", color: "white" }}
                 />
                 <Menu>
@@ -106,7 +107,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
                     variant={"link"}
                     cursor={"pointer"}
                     minW={0}
-                    marginLeft="0.5em"
+                    marginLeft={{ base: "0em", md: "0.5em" }}
                   >
                     <Avatar size={"lg"} src={"/profile.png"} />
                   </MenuButton>
@@ -125,6 +126,7 @@ export default function Navbar({ isLoggedIn, handleLogout }) {
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
+            <NavLinkDropdown />
             <Stack as={"nav"} spacing={4}>
               {Links.map((data) => (
                 <NavLink key={data.linkUrl} data={data} />
