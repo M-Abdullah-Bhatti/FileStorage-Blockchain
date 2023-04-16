@@ -22,9 +22,11 @@ import Pagination from "../../components/Pagination/Pagination";
 import Loader from "../../components/Loader/Loader";
 import axios from "axios";
 
-const AllUploadedFiles = () => {
-  const [account, setAccount] = useState(null);
+import { useNavigate } from "react-router-dom";
 
+const AllUploadedFiles = () => {
+  const navigate = useNavigate();
+  const [account, setAccount] = useState(null);
   const [files, setFiles] = useState([]);
   const [
     totalFilesCountSharedAndUploaded,
@@ -70,7 +72,7 @@ const AllUploadedFiles = () => {
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
     console.log(decrypted);
-    window.open(decrypted, "_blank");
+    navigate(`/see/${decrypted}`);
   };
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {
@@ -107,6 +109,8 @@ const AllUploadedFiles = () => {
       // Set the files state variable
       setFiles(files);
       setLoading(false);
+
+      //----------------------------testing:
     };
 
     fetchAllMyUploadedFiles();
@@ -117,25 +121,23 @@ const AllUploadedFiles = () => {
       {loading ? (
         <Loader />
       ) : (
-        <Box
-          paddingY="10"
-          paddingX={{ base: "0.5em", md: "4em" }}
-          minHeight={"90vh"}
-        >
+        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
           <Text
             mb={"2"}
-            fontSize={{ base: "3xl", md: "5xl" }}
+            fontSize="5xl"
+            // textAlign="center"
             display={"flex"}
             justifyContent={"flex-start"}
             alignItems={"center"}
-            gap={{ base: "0.5em", md: "6em" }}
+            gap={"6em"}
             textTransform="uppercase"
             textColor="#0d8775"
             fontFamily="auto"
           >
             <Text
-              fontSize={{ base: "sm", md: "3xl" }}
+              fontSize="3xl"
               textTransform={"capitalize"}
+              marginRight={"5em"}
             >
               Total Files: {totalFilesCountSharedAndUploaded}
             </Text>
@@ -144,7 +146,7 @@ const AllUploadedFiles = () => {
 
           <Text
             mb={"5"}
-            fontSize={{ base: "2xl", md: "3xl" }}
+            fontSize="3xl"
             textAlign="center"
             textTransform="uppercase"
             textColor="#0d8775"

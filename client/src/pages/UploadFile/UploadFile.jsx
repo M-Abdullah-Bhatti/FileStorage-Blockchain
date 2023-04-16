@@ -58,7 +58,7 @@ export default function UploadFile() {
       fileInfo.ipfsHash = added.path;
       setFileInfo({
         ...fileInfo,
-        ipfsHash: `https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`,
+        ipfsHash: fileInfo.ipfsHash,
       });
       console.log(`https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`);
 
@@ -70,9 +70,7 @@ export default function UploadFile() {
 
       // get encrypted hash which need to be stored in blockchain
       encryptor.setPublicKey(publicKey);
-      encryptedHash = encryptor.encrypt(
-        `https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`
-      );
+      encryptedHash = encryptor.encrypt(fileInfo.ipfsHash);
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -114,21 +112,14 @@ export default function UploadFile() {
       bg="#f2fffe"
     >
       <Text
-        fontSize={{ base: "4xl", md: "5xl" }}
+        fontSize="5xl"
         textColor="#0d8775"
         textAlign="center"
         textTransform="uppercase"
       >
         Upload your File
       </Text>
-      <Stack
-        spacing={{ base: 1, md: 8 }}
-        mx={"auto"}
-        minW={{ base: "xs", md: "md" }}
-        pt={3}
-        pb={10}
-        px={{ base: 1, md: 6 }}
-      >
+      <Stack spacing={8} mx={"auto"} minW={"md"} pt={3} pb={10} px={6}>
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}

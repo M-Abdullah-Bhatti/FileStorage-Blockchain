@@ -22,8 +22,11 @@ import Pagination from "../../components/Pagination/Pagination";
 import Loader from "../../components/Loader/Loader";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AllUnsharedFiles = () => {
+  const navigate = useNavigate();
+
   const [account, setAccount] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(true);
@@ -59,7 +62,7 @@ const AllUnsharedFiles = () => {
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
     console.log(decrypted);
-    window.open(decrypted, "_blank");
+    navigate(`/see/${decrypted}`);
   };
 
   useEffect(() => {

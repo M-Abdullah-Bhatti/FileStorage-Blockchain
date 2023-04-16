@@ -9,6 +9,8 @@ import AllUploadedFiles from "./pages/Dashboard/AllUploadedFiles";
 import AllSharedFiles from "./pages/Dashboard/AllSharedFiles";
 import AllUnsharedFiles from "./pages/Dashboard/AllUnsharedFiles";
 import AllReceivedFiles from "./pages/Dashboard/AllReceivedFiles";
+import IFrame from "./pages/Dashboard/IFrame";
+
 import Home from "./pages/Home/Home";
 import FilesForSale from "./pages/FilesForSale/FilesForSale";
 import Footer from "./components/Footer/Footer";
@@ -34,6 +36,7 @@ function App() {
         <Route exact path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login handleLogin={handleLogin} />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/see/:decrypted" element={<IFrame />} />
       </Routes>
       <Footer />
     </div>

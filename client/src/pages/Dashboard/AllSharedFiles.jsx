@@ -23,7 +23,11 @@ import Loader from "../../components/Loader/Loader";
 
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+
 const AllSharedFiles = () => {
+  const navigate = useNavigate();
+
   const [account, setAccount] = useState(null);
 
   const [sharedFiles, setSharedFiles] = useState([]);
@@ -37,7 +41,7 @@ const AllSharedFiles = () => {
   const showPagination = sharedFiles.length > itemsPerPage ? true : false;
   const [loading, setLoading] = useState(true);
 
-  const [fileId, setFileId] = useState(false);
+  const [fileId, setFileId] = useState("");
 
   const handleClick = async (fileId) => {
     console.log(Number(fileId));
@@ -60,7 +64,7 @@ const AllSharedFiles = () => {
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
     console.log(decrypted);
-    window.open(decrypted, "_blank");
+    navigate(`/see/${decrypted}`);
   };
 
   useEffect(() => {
@@ -154,7 +158,7 @@ const AllSharedFiles = () => {
                         isOpen={isOpen}
                         onOpen={onOpen}
                         onClose={onClose}
-                        fileId={Number(data.fileId)}
+                        fileId={fileId}
                       />
                       <Tr key={i}>
                         <Td>{data?.name}</Td>
