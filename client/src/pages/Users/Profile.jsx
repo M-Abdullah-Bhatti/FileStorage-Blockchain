@@ -55,11 +55,10 @@ export default function Profile() {
   useEffect(() => {
     const fetchUserData = async () => {
       let prevEmail = localStorage.getItem("email");
-      // console.log(parEmail);
       const { data } = await axios.get(
+        // req.params --> used in api Link
         `https://wild-blue-barnacle-sock.cyclic.app/api/user/profile/${prevEmail}`
       );
-      //   console.log(data);
 
       if (data) {
         setNewEmail(data.email);

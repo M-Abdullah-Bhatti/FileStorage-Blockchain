@@ -3,7 +3,6 @@ const User = require("../models/userModel");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log({ email, password });
 
   const user = await User.findOne({ email }).select("+password");
 
@@ -70,6 +69,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   }
 });
+
 const updateUserProfile = asyncHandler(async (req, res) => {
   const { username, newEmail, prevEmail } = req.body;
   const userToUpdate = await User.findOne({ email: prevEmail });

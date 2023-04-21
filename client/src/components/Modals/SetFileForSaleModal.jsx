@@ -45,7 +45,7 @@ export default function SetFileForSaleModal(props) {
         navigate("/filesforsale");
       }, 3000);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message.ed);
     }
   };
 

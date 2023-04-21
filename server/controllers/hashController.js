@@ -4,7 +4,6 @@ const ErrorHandler = require("../utils/errorhandler");
 
 // Get Pk by hash
 exports.getPrivateKey = catchAsyncErrors(async (req, res, next) => {
-  console.log("hashvalue: ", req.body.hashvalue);
   const hash = await Hash.findOne({ hashvalue: req.body.hashvalue });
   const privateKey = await hash?.privatekey;
 

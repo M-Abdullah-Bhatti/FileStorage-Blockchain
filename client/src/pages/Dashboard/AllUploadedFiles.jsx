@@ -41,12 +41,6 @@ const AllUploadedFiles = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = files.slice(indexOfFirstItem, indexOfLastItem);
   const showPagination = files.length > itemsPerPage ? true : false;
-  console.log(
-    { itemsPerPage },
-    { indexOfFirstItem },
-    { indexOfLastItem },
-    { currentItems }
-  );
 
   const [hash, setHash] = useState("");
   const [fileContent, setFileContent] = useState("");
@@ -71,8 +65,8 @@ const AllUploadedFiles = () => {
 
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
-    console.log(decrypted);
-    navigate(`/see/${decrypted}`);
+    window.open(`https://gateway.pinata.cloud/ipfs/${decrypted}`, "_blank");
+    // navigate(`/see/${decrypted}`);
   };
   useEffect(() => {
     const fetchAllMyUploadedFiles = async () => {

@@ -62,8 +62,6 @@ export default function UploadFile() {
       });
       console.log(`https://gateway.pinata.cloud/ipfs/${fileInfo.ipfsHash}`);
 
-      console.log("dsfdsf: ", fileInfo);
-
       //   // First get both public and private Keys
       publicKey = encryptor.getPublicKey();
       privatekey = encryptor.getPrivateKey();

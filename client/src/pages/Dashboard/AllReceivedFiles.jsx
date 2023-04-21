@@ -38,9 +38,11 @@ const AllReceivedFiles = () => {
   const showPagination = recievedFiles.length > itemsPerPage ? true : false;
 
   const click = async (hash) => {
-    console.log("click");
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
-
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const walletAddress = await signer.getAddress();
+    localStorage.setItem("walletAddress", walletAddress);
     const { data } = await axios.post(
       "https://wild-blue-barnacle-sock.cyclic.app/api/hash/getPrivateKey",
       {
@@ -50,7 +52,6 @@ const AllReceivedFiles = () => {
 
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
-    console.log(decrypted);
     navigate(`/see/${decrypted}`);
   };
 
@@ -59,6 +60,7 @@ const AllReceivedFiles = () => {
       // Connect to the contract using ethers.js
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
+
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
@@ -76,7 +78,6 @@ const AllReceivedFiles = () => {
       // Call the getAllMyUploadedFiles() function and retrieve the files
       const files = await contract.getAllMyReceivedFiles();
 
-      // console.log("recieved files: ", files);
       // Set the files state variable
       setRecievedFiles(files);
       setLoading(false);

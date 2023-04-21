@@ -43,7 +43,7 @@ export default function ShareFileModal(props) {
         navigate("/myallsharedfiles");
       }, 3000);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message.ed);
     }
   };
 

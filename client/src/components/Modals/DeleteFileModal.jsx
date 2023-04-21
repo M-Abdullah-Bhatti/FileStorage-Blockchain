@@ -24,7 +24,6 @@ export default function DeleteFileModal(props) {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      console.log("signer: ", signer);
       const contract = new ethers.Contract(
         FileStorageMarketplace.address,
         FileStorageMarketplace.abi,
@@ -38,7 +37,7 @@ export default function DeleteFileModal(props) {
         navigate("/myallunsharedfiles");
       }, 3000);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message.ed);
     }
   };
 

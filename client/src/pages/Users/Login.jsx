@@ -30,12 +30,11 @@ export default function Login({ handleLogin }) {
         })
         .then((result) => {
           toast.success("user login successfully");
-          // console.log("user login successfully", result.data.token);
           handleLogin(result.data.token);
           localStorage.setItem("email", email);
           navigate("/");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => toast.error("Email or password is invalid"));
     } catch (error) {
       console.log(error.message);
     }

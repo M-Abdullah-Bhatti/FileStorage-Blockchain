@@ -22,7 +22,6 @@ import { toast } from "react-toastify";
 const CardComponent = (props) => {
   const navigate = useNavigate();
   const account = useAddress();
-  // console.log({ account });
 
   const {
     onOpen,
@@ -69,7 +68,6 @@ const CardComponent = (props) => {
       return;
     }
     onOpen();
-    // console.log("fileId: ", fileId);
     localStorage.setItem("fileId", fileId);
   };
 

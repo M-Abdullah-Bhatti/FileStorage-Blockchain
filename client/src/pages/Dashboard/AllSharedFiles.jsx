@@ -51,7 +51,6 @@ const AllSharedFiles = () => {
   };
 
   const click = async (hash) => {
-    console.log("click");
     let encryptor = new JSEncrypt({ default_key_size: 2048 });
 
     const { data } = await axios.post(
@@ -63,8 +62,7 @@ const AllSharedFiles = () => {
 
     encryptor.setPrivateKey(data.privateKey);
     let decrypted = encryptor.decrypt(hash);
-    console.log(decrypted);
-    navigate(`/see/${decrypted}`);
+    window.open(`https://gateway.pinata.cloud/ipfs/${decrypted}`, "_blank");
   };
 
   useEffect(() => {
