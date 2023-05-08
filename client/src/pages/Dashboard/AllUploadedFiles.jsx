@@ -112,123 +112,115 @@ const AllUploadedFiles = () => {
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
-          <Text
-            mb={"2"}
-            fontSize="5xl"
-            // textAlign="center"
-            display={"flex"}
-            justifyContent={"flex-start"}
-            alignItems={"center"}
-            gap={"6em"}
-            textTransform="uppercase"
-            textColor="#0d8775"
-            fontFamily="auto"
-          >
-            <Text
-              fontSize="3xl"
-              textTransform={"capitalize"}
-              marginRight={"5em"}
-            >
-              Total Files: {totalFilesCountSharedAndUploaded}
-            </Text>
-            Dashboard
+      <Box paddingY="10" paddingX="4em" minHeight={"90vh"}>
+        <Text
+          mb={"2"}
+          fontSize="5xl"
+          // textAlign="center"
+          display={"flex"}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
+          gap={"6em"}
+          textTransform="uppercase"
+          textColor="#0d8775"
+          fontFamily="auto"
+        >
+          <Text fontSize="3xl" textTransform={"capitalize"} marginRight={"5em"}>
+            Total Files: {totalFilesCountSharedAndUploaded}
           </Text>
+          Dashboard
+        </Text>
 
-          <Text
-            mb={"5"}
-            fontSize="3xl"
-            textAlign="center"
-            textTransform="uppercase"
-            textColor="#0d8775"
-            fontFamily="auto"
-          >
-            All My Uploaded Files
-          </Text>
+        <Text
+          mb={"5"}
+          fontSize="3xl"
+          textAlign="center"
+          textTransform="uppercase"
+          textColor="#0d8775"
+          fontFamily="auto"
+        >
+          All My Uploaded Files
+        </Text>
 
-          {/* Tables */}
+        {/* Tables */}
 
-          <TableContainer>
-            <Table size="md" border="1px" borderColor="gray.200">
-              <Thead>
+        <TableContainer>
+          <Table size="md" border="1px" borderColor="gray.200">
+            <Thead>
+              <Tr>
+                <Th paddingY="1em" fontSize="xl">
+                  File Name
+                </Th>
+                <Th fontSize="xl">File Hash</Th>
+                <Th fontSize="xl">File Price</Th>
+                <Th fontSize="xl">Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {files.length === 0 ? (
                 <Tr>
-                  <Th paddingY="1em" fontSize="xl">
-                    File Name
-                  </Th>
-                  <Th fontSize="xl">File Hash</Th>
-                  <Th fontSize="xl">File Price</Th>
-                  <Th fontSize="xl">Action</Th>
+                  <Text fontSize="3xl" textAlign="center" paddingY={10}>
+                    You haven't uploaded any file
+                  </Text>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {files.length === 0 ? (
-                  <Tr>
-                    <Text fontSize="3xl" textAlign="center" paddingY={10}>
-                      You haven't uploaded any file
-                    </Text>
-                  </Tr>
-                ) : (
-                  currentItems.map((data, i) => (
-                    <>
-                      <SetFileForSaleModal
-                        isOpen={isOpen}
-                        onOpen={onOpen}
-                        onClose={onClose}
-                        fileId={fileId}
-                      />
+              ) : (
+                currentItems.map((data, i) => (
+                  <>
+                    <SetFileForSaleModal
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                      fileId={fileId}
+                    />
 
-                      <Tr key={i}>
-                        <Td>{data.name}</Td>
-                        <Td>
-                          <Link
-                            fontWeight="light"
-                            fontSize="md"
-                            onClick={() => click(data.hash)}
-                            isExternal
-                          >
-                            {data.hash.slice(0, 20) +
-                              "..." +
-                              data.hash.slice(-20)}{" "}
-                            <ExternalLinkIcon mx="2px" />
-                          </Link>
-                        </Td>
+                    <Tr key={i}>
+                      <Td>{data.name}</Td>
+                      <Td>
+                        <Link
+                          fontWeight="light"
+                          fontSize="md"
+                          onClick={() => click(data.hash)}
+                          isExternal
+                        >
+                          {data.hash.slice(0, 20) +
+                            "..." +
+                            data.hash.slice(-20)}{" "}
+                          <ExternalLinkIcon mx="2px" />
+                        </Link>
+                      </Td>
 
-                        <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
-                        <Td>
-                          <Button
-                            // onClick={onOpen}
-                            onClick={() => handleClick(data.fileId)}
-                            colorScheme="teal"
-                            backgroundColor="black"
-                            size="lg"
-                            marginX={"10px"}
-                            _hover={{
-                              backgroundColor: "blackAlpha.800",
-                            }}
-                          >
-                            Set File For Sale
-                          </Button>
-                        </Td>
-                      </Tr>
-                    </>
-                  ))
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
-          {showPagination && (
-            <Pagination
-              itemsPerPage={itemsPerPage}
-              totalItems={files.length}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
-        </Box>
-      )}
+                      <Td>{`${ethers.utils.formatEther(data.price)} ETH`}</Td>
+                      <Td>
+                        <Button
+                          // onClick={onOpen}
+                          onClick={() => handleClick(data.fileId)}
+                          colorScheme="teal"
+                          backgroundColor="black"
+                          size="lg"
+                          marginX={"10px"}
+                          _hover={{
+                            backgroundColor: "blackAlpha.800",
+                          }}
+                        >
+                          Set File For Sale
+                        </Button>
+                      </Td>
+                    </Tr>
+                  </>
+                ))
+              )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        {showPagination && (
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={files.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+      </Box>
     </>
   );
 };
