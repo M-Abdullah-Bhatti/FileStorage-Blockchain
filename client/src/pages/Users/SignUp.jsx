@@ -44,7 +44,10 @@ export default function Signup() {
           // }, "2000");
         })
 
-        .catch((error) => toast.error(error.response.data.message));
+        .catch((error) => {
+          toast.error(error.response.data.message);
+          console.log("error: ", error);
+        });
     } catch (error) {
       console.log("catch error: ", error.message);
     }
